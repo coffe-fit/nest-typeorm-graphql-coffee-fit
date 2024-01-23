@@ -23,7 +23,7 @@ async function bootstrap() {
                     : [`http://localhost:${process.env.PORT}`]
   console.log(origin);
   // process.env.SECRETO = require('../localhost.pem')
-  console.log(fs.readFileSync('../localhost.pem'),);
+  // console.log(fs.readFileSync('../localhost.pem'),);
   
   app.enableCors({
     origin,
