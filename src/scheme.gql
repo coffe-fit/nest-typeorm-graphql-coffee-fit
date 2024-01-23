@@ -1,0 +1,318 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type companies {
+  id: String!
+  name: String!
+  companyLead: String!
+  active: Boolean!
+  address: String!
+  phone: String!
+  nit: String!
+  email: String!
+  logo: String!
+}
+
+type roles {
+  id: String
+  active: Boolean!
+  name: String!
+}
+
+type Users {
+  id: String!
+  username: String!
+  document: String!
+  gender: String!
+  email: String!
+  phone: String!
+  age: Float!
+  role: roles!
+  company: companies!
+}
+
+type exercises {
+  id: ID!
+  name: String!
+  imgGood: String!
+  imgBad: String!
+  active: Boolean!
+  activeByCompany: Boolean!
+  userCreator: Users!
+}
+
+type rutines_detail {
+  id: String!
+  frequency: String!
+  amountMax: String!
+  intensity: String!
+  frequencyCardiac: String!
+  pulsation: String!
+  seriesRange: String!
+  rest: String!
+  days: String!
+  obs: String!
+  rutine: rutines!
+  RutineDetailroutine: rutines_detail!
+}
+
+type rutinesType {
+  id: String!
+  active: Boolean!
+  name: String!
+}
+
+type rutines {
+  id: String
+  names: String
+  imgGood: String!
+  imgBad: String!
+  dateIni: DateTime!
+  dateEnd: DateTime!
+  days: Float!
+  series: Float!
+  amountRepeat: Float!
+  obs: String!
+  user: Users!
+  role1: roles!
+  role2: roles!
+  role3: roles!
+  company: companies!
+  rutineType: rutinesType!
+  exercise: exercises!
+  rutineDetail: rutines_detail!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type auth {
+  token: String!
+}
+
+type progress {
+  id: String
+  measurement: String!
+  bodyIndex: String!
+  weightByKilos: Float!
+  dateCreated: DateTime!
+  obs: String!
+  user: Users!
+}
+
+type Query {
+  user_findAll: [Users!]!
+  exercise_findById(exerciseId: String!): exercises!
+  company_findAll: [companies!]!
+  company_findById(companyId: String!): companies!
+  role_findAll: [roles!]!
+  role_findById(roleId: String!): roles!
+  rutine_findAll: [rutines!]!
+  rutine_findById(rutineId: String!): rutines!
+  rutineDetail_findAll: [rutines_detail!]!
+  rutineType_findAll: [rutinesType!]!
+  rutineType_findById(id: String!): rutinesType!
+  exercise_findAll: [exercises!]!
+  auth_signOut(userId: String!): auth!
+  progress_findAll: [progress!]!
+  progress_findById(progressId: String!): progress!
+}
+
+type Mutation {
+  user_create(createUserInput: CreateUserInput!): Users!
+  user_update(userId: String!, updateUserInput: UpdateUserInput!): Users!
+  remove(userId: String!): Users!
+  company_create(createCompanyInput: CreateCompanyInput!): companies!
+  company_update(companyId: String!, updateCompanyInput: UpdateCompanyInput!): companies!
+  company_delete(companyId: String!): companies!
+  role_create(createRoleInput: CreateRoleInput!): roles!
+  role_update(roleId: String!, updateRoleInput: UpdateRoleInput!): roles!
+  role_delete(roleId: String!): roles!
+  rutine_create(createRutineInput: CreateRutineInput!): rutines!
+  rutine_update(rutineId: String!, updateRutineInput: UpdateRutineInput!): rutines!
+  rutine_delete(rutineId: String!): rutines!
+  rutineDetail_create(CreateRutinesDetailInput: CreateRutinesDetailInput!): rutines_detail!
+  rutineDetail_update(rutineDetailId: String!, updateRutinesDetailInput: UpdateRutinesDetailInput!): rutines_detail!
+  rutineDetail_delete(rutineDetailId: String!): rutines_detail!
+  rutineType_create(createRutineTypeInput: CreateRutinesTypeInput!): rutinesType!
+  rutineType_update(rutinesTypeId: String!, updateRutinesTypeInput: UpdateRutinesTypeInput!): rutinesType!
+  exercise_delete(exerciseId: String!): exercises!
+  exercise_create(createExerciseInput: CreateExerciseInput!): exercises!
+  exercise_update(exerciseId: String!, updateExerciseInput: UpdateExerciseInput!): exercises!
+  auth_signIn(signInAuthInput: CreateAuthInput!): auth!
+  auth_signUp(createUserInput: CreateUserInput!): auth!
+  progress_create(createProgressInput: CreateProgressInput!): progress!
+  progress_update(progressId: String!, updateProgressInput: UpdateProgressInput!): progress!
+  progress_delete(progressId: String!): progress!
+}
+
+input CreateUserInput {
+  age: Float = 0
+  companyId: String = "0001COF"
+  document: String = ""
+  email: String!
+  gender: String = "MEN"
+  phone: String = ""
+  roleId: String = "CLIENT"
+  password: String!
+  username: String = ""
+}
+
+input UpdateUserInput {
+  username: String!
+  document: String!
+  gender: String
+  email: String
+  phone: String
+  age: Float
+  roleId: String
+  active: Boolean
+  companyId: String
+}
+
+input CreateCompanyInput {
+  active: Boolean = true
+  address: String!
+  companyLead: String = ""
+  email: String!
+  logo: String!
+  name: String!
+  nameId: String!
+  nit: String!
+  phone: String!
+}
+
+input UpdateCompanyInput {
+  active: Boolean
+  address: String
+  companyLead: String
+  email: String
+  logo: String
+  name: String
+  nit: String
+  phone: String
+}
+
+input CreateRoleInput {
+  name: String!
+}
+
+input UpdateRoleInput {
+  active: Boolean
+  name: String
+}
+
+input CreateRutineInput {
+  amountRepeat: Float!
+  companyId: String!
+  dateIni: DateTime!
+  dateEnd: DateTime!
+  days: Float!
+  exerciseId: String!
+  imgGood: String!
+  imgBad: String!
+  obs: String!
+  roleId1: String!
+  roleId2: String!
+  roleId3: String!
+  rutineTypeId: String!
+  name: String!
+  series: Float!
+  userId: String!
+}
+
+input UpdateRutineInput {
+  amountRepeat: Float
+  companyId: String
+  dateIni: DateTime
+  dateEnd: DateTime
+  days: Float
+  exerciseId: String
+  imgGood: String
+  imgBad: String
+  obs: String
+  roleId1: String
+  roleId2: String
+  roleId3: String
+  rutineTypeId: String
+  names: String
+  series: Float
+  userId: String
+}
+
+input CreateRutinesDetailInput {
+  frequency: String!
+  amountMax: String!
+  intensity: String!
+  frequencyCardiac: String!
+  pulsation: String!
+  seriesRange: String!
+  rutineId: String!
+  rest: String!
+  days: String!
+  obs: String!
+}
+
+input UpdateRutinesDetailInput {
+  frequency: String
+  amountMax: String
+  intensity: String
+  frequencyCardiac: String
+  pulsation: String
+  seriesRange: String
+  rutineId: String
+  rest: String
+  days: String
+  obs: String
+}
+
+input CreateRutinesTypeInput {
+  active: Boolean!
+  name: String!
+}
+
+input UpdateRutinesTypeInput {
+  active: Boolean
+  name: String
+}
+
+input CreateExerciseInput {
+  name: String!
+  imgGood: String!
+  imgBad: String!
+  userCreatorId: String!
+  active: Boolean
+  activeByCompany: Boolean
+}
+
+input UpdateExerciseInput {
+  name: String
+  imgGood: String
+  imgBad: String
+  userCreatorId: String
+  active: Boolean
+  activeByCompany: Boolean
+}
+
+input CreateAuthInput {
+  email: String!
+  foranyToken: String!
+}
+
+input CreateProgressInput {
+  bodyIndex: String!
+  measurement: String!
+  obs: String!
+  userId: String!
+  weightByKilos: Float!
+}
+
+input UpdateProgressInput {
+  bodyIndex: String
+  measurement: String
+  weightByKilos: Float
+  obs: String
+}

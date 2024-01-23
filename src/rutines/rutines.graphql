@@ -1,0 +1,24 @@
+type Rutine {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateRutineInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateRutineInput {
+  id: Int!
+}
+
+type Query {
+  rutines: [Rutine]!
+  rutine(id: Int!): Rutine
+}
+
+type Mutation {
+  createRutine(createRutineInput: CreateRutineInput!): Rutine!
+  updateRutine(updateRutineInput: UpdateRutineInput!): Rutine!
+  removeRutine(id: Int!): Rutine
+}

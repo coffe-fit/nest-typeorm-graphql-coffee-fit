@@ -1,0 +1,24 @@
+type Progress {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateProgressInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateProgressInput {
+  id: Int!
+}
+
+type Query {
+  progress: [Progress]!
+  progress(id: Int!): Progress
+}
+
+type Mutation {
+  createProgress(createProgressInput: CreateProgressInput!): Progress!
+  updateProgress(updateProgressInput: UpdateProgressInput!): Progress!
+  removeProgress(id: Int!): Progress
+}

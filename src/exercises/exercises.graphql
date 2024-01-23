@@ -1,0 +1,24 @@
+type Exercise {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateExerciseInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateExerciseInput {
+  id: Int!
+}
+
+type Query {
+  exercises: [Exercise]!
+  exercise(id: Int!): Exercise
+}
+
+type Mutation {
+  createExercise(createExerciseInput: CreateExerciseInput!): Exercise!
+  updateExercise(updateExerciseInput: UpdateExerciseInput!): Exercise!
+  removeExercise(id: Int!): Exercise
+}

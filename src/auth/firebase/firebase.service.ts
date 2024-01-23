@@ -1,0 +1,53 @@
+// firebase.service.ts
+
+// import * as admin from 'firebase-admin';
+import { Injectable } from '@nestjs/common';
+import { firebaseConfig2 } from './config';
+// import jsonr fro;
+// import { ServiceAccount } from 'firebase-admin';
+
+const admin = require('firebase-admin')
+// let serviceAccount = require('./key_firebase');
+// let serviceAccount = {
+//   "type": "service_account",
+//   "project_id": "coffe-fit",
+//   "private_key_id": "81770ad6dd80a0500c6cca70aac504b91e5c59a3",
+//   "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCLTuaMM71gS0pI\nu7bRVhCP7w1wEFL5lBB0hcXHXSKO3toDGm1iWg89xl2jDSA9/nqSFIY1e1aCvQpt\n+SOmCZL8WI9KaxFdZQMmSW4sT4Z8Q3bzqEiAyHQ/FZpGdC0v1jnlSE9H4Wgh7hSf\nEsiUzUvymBB/7XkWD9pC4q9R1EcUSOaJuungxC91sk1YToEcgXmCZK3t3z+s5+tk\n0dXIgGqD+Yn5UmifEjBs8ZvhVVJ6NI05dDjOV4Q2eMSAopHb6bhCAaMLBdcNwRLB\nYT+4SkvSDwbNLUL3/iPw7cLVVj1JPwVetAFzZDBdHVE0ViuoOgZQ4RDn0m9MUq3s\nBtan6so3AgMBAAECggEAFt0faUxb8lrOZCtBi+WluJHXW+358vy89KWN+ooL0B9o\nRaZyjyKmf2Y4BmOdnT8lK9DoNA08UMnTqo1U2f1BSAmwPtpdZ72FQPqVSqV6C5lh\nA7LkxL+MQLGmzUBnuC20o9p0f0t8n/D80RzamdLV+l4V0IE6ZIdmiaATKTQqFFHN\nW2PugnLtlCrIr+1fGnTSaKbgeVsayR5PKpe+xppd3vAQeLHtwmwxNEEG+EziQNbH\nvlVGXbbAFO1Yts56HKLf8eHiA3+aFRkMnhNU/RmzM2/4cjYu35rxoJkS9MfBkhfd\nxUX4mB0Cy69UK60gQaZIA8p1//yytqHG3l4gRtiUqQKBgQDASkksNE+NqMf7NyWn\ntt5T0BKVymBdSw/M+8CuGXyamIEMUIyoJTYx8i5aqmDbXD7Mtionv0auvygVg3JT\nk6ECOJ/6yu1g8UdqGG67bn0ScPQPSnBkOG3GnptZw1WI4ykHXPbmrASy77JA1NjV\ny25CEe+tJC03gtrO2eeqxpgBSQKBgQC5dsbvvIjAJMDrcSu6cuZZwaIiu3BYzaAm\nSmgJhDPjsMvpvwIfVe0PUMkOgyGb9mgzo+Aea0TyDMtvKCzYg3e/GTNsdHciEU9M\nDtVqVvJjmgwlX54K8EeQ1x1n51Lh+tzzOdSLCfGkTviALL+LpADqq3P6n6mcu2kS\nUDiI/dfvfwKBgQCJas0eFQghMVQxGHkFgS8jcFhHycfSBBl3oRZSlQ4yIPhgR5Qt\neeJgETXFP2tWeHa8rxYzL4Og0CUiMrzaM29l+feCL9EybVte27UOp2gkbKpN3yGw\nzY7N2X0lye1vlP82Lt6XfKkjAx89K58GMopKFy1Ua70QpagfGSRxK9lnWQKBgAe/\nkJwfck8kufKcLcmCV2FUl6N/1TfAj3pKDYKoRUqz7jD7y+jnPBoxs9SpYdQUPVI6\n/HgI3z6FjlI8iXMaOvx+3wke7IM92eRBkmT48PN8UhmVnxKx6yt/8TiQD4RlaKm4\ntsqARdopenRQakg5N9iWBShpVzq3EbK0K0h94nGdAoGAQO4uluYxlyKNCXKfsdc5\nJcyFK0yGl3qprHwqcQypgDUvUx305OhZy7CTGMkGYgAzRbll57jvzyrvxutksz8F\nNeGEjurQyrJGEgXCu2YCnXqEomP0TLWPw0/NJ1T0uWLs6CNoHEvbRydKPZx4ujIP\nqEUN8u0EsSdnvECs4dAjXFg=\n-----END PRIVATE KEY-----\n",
+//   "client_email": "firebase-adminsdk-pnlrq@coffe-fit.iam.gserviceaccount.com",
+//   "client_id": "117790866505867949119",
+//   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+//   "token_uri": "https://oauth2.googleapis.com/token",
+//   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+//   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-pnlrq%40coffe-fit.iam.gserviceaccount.com",
+//   "universe_domain": "googleapis.com"
+// }
+let serviceAccount = {
+  "type": `${process.env.FR_TYPE}`,
+  "project_id": `${process.env.FR_PROYECT_ID}`,
+  "private_key_id": `${process.env.FR_PRIVATE_KEY_ID}`,
+  "private_key": `-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCLTuaMM71gS0pI\nu7bRVhCP7w1wEFL5lBB0hcXHXSKO3toDGm1iWg89xl2jDSA9/nqSFIY1e1aCvQpt\n+SOmCZL8WI9KaxFdZQMmSW4sT4Z8Q3bzqEiAyHQ/FZpGdC0v1jnlSE9H4Wgh7hSf\nEsiUzUvymBB/7XkWD9pC4q9R1EcUSOaJuungxC91sk1YToEcgXmCZK3t3z+s5+tk\n0dXIgGqD+Yn5UmifEjBs8ZvhVVJ6NI05dDjOV4Q2eMSAopHb6bhCAaMLBdcNwRLB\nYT+4SkvSDwbNLUL3/iPw7cLVVj1JPwVetAFzZDBdHVE0ViuoOgZQ4RDn0m9MUq3s\nBtan6so3AgMBAAECggEAFt0faUxb8lrOZCtBi+WluJHXW+358vy89KWN+ooL0B9o\nRaZyjyKmf2Y4BmOdnT8lK9DoNA08UMnTqo1U2f1BSAmwPtpdZ72FQPqVSqV6C5lh\nA7LkxL+MQLGmzUBnuC20o9p0f0t8n/D80RzamdLV+l4V0IE6ZIdmiaATKTQqFFHN\nW2PugnLtlCrIr+1fGnTSaKbgeVsayR5PKpe+xppd3vAQeLHtwmwxNEEG+EziQNbH\nvlVGXbbAFO1Yts56HKLf8eHiA3+aFRkMnhNU/RmzM2/4cjYu35rxoJkS9MfBkhfd\nxUX4mB0Cy69UK60gQaZIA8p1//yytqHG3l4gRtiUqQKBgQDASkksNE+NqMf7NyWn\ntt5T0BKVymBdSw/M+8CuGXyamIEMUIyoJTYx8i5aqmDbXD7Mtionv0auvygVg3JT\nk6ECOJ/6yu1g8UdqGG67bn0ScPQPSnBkOG3GnptZw1WI4ykHXPbmrASy77JA1NjV\ny25CEe+tJC03gtrO2eeqxpgBSQKBgQC5dsbvvIjAJMDrcSu6cuZZwaIiu3BYzaAm\nSmgJhDPjsMvpvwIfVe0PUMkOgyGb9mgzo+Aea0TyDMtvKCzYg3e/GTNsdHciEU9M\nDtVqVvJjmgwlX54K8EeQ1x1n51Lh+tzzOdSLCfGkTviALL+LpADqq3P6n6mcu2kS\nUDiI/dfvfwKBgQCJas0eFQghMVQxGHkFgS8jcFhHycfSBBl3oRZSlQ4yIPhgR5Qt\neeJgETXFP2tWeHa8rxYzL4Og0CUiMrzaM29l+feCL9EybVte27UOp2gkbKpN3yGw\nzY7N2X0lye1vlP82Lt6XfKkjAx89K58GMopKFy1Ua70QpagfGSRxK9lnWQKBgAe/\nkJwfck8kufKcLcmCV2FUl6N/1TfAj3pKDYKoRUqz7jD7y+jnPBoxs9SpYdQUPVI6\n/HgI3z6FjlI8iXMaOvx+3wke7IM92eRBkmT48PN8UhmVnxKx6yt/8TiQD4RlaKm4\ntsqARdopenRQakg5N9iWBShpVzq3EbK0K0h94nGdAoGAQO4uluYxlyKNCXKfsdc5\nJcyFK0yGl3qprHwqcQypgDUvUx305OhZy7CTGMkGYgAzRbll57jvzyrvxutksz8F\nNeGEjurQyrJGEgXCu2YCnXqEomP0TLWPw0/NJ1T0uWLs6CNoHEvbRydKPZx4ujIP\nqEUN8u0EsSdnvECs4dAjXFg=\n-----END PRIVATE KEY-----\n`,
+  // "private_key": `${process.env.SECRET_RENDER}`,
+  "client_email": `${process.env.FR_CLIENT_EMAIL}`,
+  "client_id": `${process.env.FR_CLIENT_ID}`,
+  "auth_uri": `${process.env.FR_AUTH_URL}`,
+  "token_uri": `${process.env.FR_TOKEN_URI}`,
+  "auth_provider_x509_cert_url": `${process.env.FR_AUTH_PROVIDER_X509}`,
+  "client_x509_cert_url": `${process.env.FR_CLIENT_X509}`,
+  "universe_domain": `${process.env.FR_UNIVERSE_DOMAIN}`
+}
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: `https://${process.env.FR_APP_ID}.firebaseio.com`,
+});
+
+@Injectable()
+export class FirebaseService {
+  
+  async verifyIdToken(token: string): Promise<any> {
+    console.log(serviceAccount);
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    return decodedToken;
+  }
+}
