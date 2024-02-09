@@ -1,7 +1,6 @@
 // active-user.guard.ts
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { admin } from '../firebase/firebase.service';
 import { FirebaseStrategy } from '../strategies/firebase.strategy';
 
 @Injectable()
