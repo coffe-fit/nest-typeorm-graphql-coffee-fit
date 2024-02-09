@@ -13,7 +13,7 @@ export class RutineType{
   id?: string;
 
   @Field({nullable: true})
-  names: string;
+  name: string;
 
   @Field()
   imgGood?: string;

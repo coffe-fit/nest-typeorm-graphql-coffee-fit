@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { FirebaseService } from './firebase/firebase.service';
+import { AuthForanyToken } from './dto/auth-forany.input';
 
 @Injectable()
 export class AuthService {
@@ -37,6 +38,32 @@ export class AuthService {
       id: user.id,
       roleId: user.role,
       companyId: user.company
+    })};
+  }
+
+  async signInFromFirebase(createAuthInput: AuthForanyToken) {
+    const {email, name, foranyToken}: any = createAuthInput;
+
+    // para que me retorne solo la data que necesito
+    let user = await this.userRepository.findOne({
+      where: {email}, //  manda la condición del email
+      select: {email: true, password: true, id: true} // seleccione los campos que interesan 
+    });
+    if (!user) {
+      user = await this.userService.createUser({
+        email,
+        username: name || '',
+        document: '',
+        gender: '',
+        roleId: '',
+        phone: '',
+        age: 0
+      });
+    }
+    return {...user, token: this.getJwtToken({
+      id: user.id,
+      email: user.email,
+      foranyToken
     })};
   }
 
@@ -74,14 +101,13 @@ export class AuthService {
   }
 
   async validateUserFromFirebase(token: string){
-    console.log(token, this.firebaseService.verifyIdToken(token));
-    const { id }: any = this.firebaseService.verifyIdToken(token);
-    const user = await this.userRepository.findOneBy({id});
-    if (!user)
+    const { email }: any = await this.firebaseService.verifyIdToken(token);
+    console.log('validateUserFromFirebase id -------', email);
+    if (!email)
       throw new UnauthorizedException('Token not valid');
-    if (!user.active)
-      throw new UnauthorizedException('User is not active');
-    return user
+    // if (!user.active)
+    //   throw new UnauthorizedException('User is not active');
+    return email
   }
 
   generateToken(token: string) {
@@ -93,7 +119,7 @@ export class AuthService {
   }
 
   private getJwtToken( payload: any) {
-    console.log(this.jwtService.sign(payload));
+    console.log('token generated: ------------', payload.email, '---------------');
     
     const token = this.jwtService.sign(payload);
     return token;

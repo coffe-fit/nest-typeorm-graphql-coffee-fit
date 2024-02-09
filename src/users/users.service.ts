@@ -24,12 +24,12 @@ export class UsersService {
     let {roleId, companyId, ...dataInput} = createUserInput;
     // const role = { name: roleId } as unknown as Role || {}
     const role = await this.RoleRepository.findOne({
-      where: {name: roleId}
+      where: {name: roleId || 'CLIENT'}
     })
     // const company = {nameId: companyId} as unknown as Company || {}
     const company = await this.CompanyRepository.findOne({
       where: {nameId: companyId}
-    })
+    }) 
     const user = this.userRepository.create(
       {
         role,

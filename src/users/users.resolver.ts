@@ -4,6 +4,8 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UsersType } from './users.type';
 import { User } from './entities/user.entity';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Resolver(of => UsersType)
 export class UsersResolver {
@@ -43,11 +45,6 @@ export class UsersResolver {
   @Query(returns => [UsersType])
   user_findAll() {
     return this.usersService.getAllUsers();
-  }
-
-  @Query(returns => UsersType)
-  async exercise_findById(@Args('exerciseId') id: string): Promise<User> {
-    return this.usersService.findOneUser(id);
   }
 
   @Mutation(returns => UsersType)

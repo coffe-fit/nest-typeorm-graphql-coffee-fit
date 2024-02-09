@@ -41,7 +41,7 @@ export class User {
   @Column('text', {
     default: '',
   })
-  phone: string;
+  phone?: string;
 
   @Column('int',{
     default: 0,

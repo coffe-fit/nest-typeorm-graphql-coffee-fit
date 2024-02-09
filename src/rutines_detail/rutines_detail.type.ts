@@ -1,7 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsNumber, IsNotEmpty, IsString } from 'class-validator';
 import { Rutine } from 'src/rutines/entities/rutine.entity';
-import { RutineType } from 'src/rutines/rutine.type';
+import { RutineType } from 'src/rutines/types/rutine.type';
 
 @ObjectType('rutines_detail')
 export class RutinesDetailType {

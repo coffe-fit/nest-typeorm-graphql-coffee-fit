@@ -60,6 +60,19 @@ export const getDataById = async (
   return register;
 }
 
+export const getDataByUserId = async (
+  userId: string,
+  repository: any,
+  relations?: string[]
+) => {
+  const register = await repository.findOne({
+    where: {userId},
+    relations: relations
+  })
+  ownNotFoundException(userId, register);
+  return register;
+}
+
 export const ownNotFoundException = (id: string, register: any, ) => {
   if (!register)
       throw new NotFoundException(`Item with id: ${id} not found`);

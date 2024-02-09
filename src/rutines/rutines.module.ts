@@ -9,9 +9,11 @@ import { Role } from 'src/roles/entities/role.entity';
 import { RutineDetail } from 'src/rutines_detail/entities/rutines_detail.entity';
 import { RutinesType } from 'src/rutines_type/entities/rutines_type.entity';
 import { Exercise } from 'src/exercises/entities/exercise.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature([
       Rutine,
       RutinesType,

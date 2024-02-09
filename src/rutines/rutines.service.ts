@@ -9,7 +9,8 @@ import { Role } from 'src/roles/entities/role.entity';
 import { RutinesType } from 'src/rutines_type/entities/rutines_type.entity';
 import { Exercise } from 'src/exercises/entities/exercise.entity';
 import { UpdateRutineInput } from './dto/update-rutine.input';
-import { deleteCode, getDataById, updateCode } from 'src/utils';
+import { deleteCode, getDataById, updateCode, getDataByUserId } from 'src/utils';
+import { RutineType } from './types/rutine.type';
 
 @Injectable()
 export class RutineService {
@@ -73,6 +74,30 @@ export class RutineService {
       this.relations
       );
     return rutine;
+  }
+
+  async getAllRutinesByUserId(userId: string): Promise<{ rutineTypeId: string; rutines:any}[]> {
+    const rutine = await this.RutineRepository.find({
+      where: {user: {id: userId} as User },
+      relations: this.relations
+    }) 
+    
+    const result: { rutineTypeId: any, rutines: Rutine[] }[] = [];
+
+    // // Obtener RutineTipeId únicos
+    const uniqueTypeIds = [...new Set(rutine.map(item => {
+      if (item.rutineType !== null) {
+        return item.rutineType?.id
+      }
+    }))];
+
+    // Iterar sobre cada RutineTipeId único
+    uniqueTypeIds.forEach(typeId => {
+      // Filtrar elementos por RutineTipeId y agregar al resultado
+      const filteredItems = rutine.filter(item => item.rutineType && item.rutineType?.id === typeId);
+      result.push({ rutineTypeId: typeId, rutines: filteredItems });
+    });
+    return result
   }
 
   async updateRutine(rutineId: string, updateRutineInput: UpdateRutineInput): Promise<Rutine> {

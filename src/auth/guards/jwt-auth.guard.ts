@@ -1,6 +1,6 @@
 // jwt-auth.guard.ts
 
-import { Injectable, CanActivate, ExecutionContext, Headers } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, Headers, UnauthorizedException } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtStrategy } from '../strategies/jwt.strategy';
 import { IncomingHttpHeaders, request } from 'http';
@@ -13,18 +13,21 @@ export class JwtAuthGuard implements CanActivate {
     
     const ctx = GqlExecutionContext.create(context).getContext();
 
-    const token = ctx.req.headers.authorization?.split(' ')[0];
+    const token = ctx.req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      return false;
+      throw new UnauthorizedException('AuthToken not found.');
+      ;
     }
 
     try {
       const user = await this.jwtStrategy.validate(token);
+      
       ctx.user = user;
       return true;
     } catch (error) {
-      return false;
+      console.log('JwtAuthGuard', error);
+      throw new UnauthorizedException('Token not valid');
     }
   }
 }

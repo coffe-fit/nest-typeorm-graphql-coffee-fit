@@ -45,16 +45,19 @@ export class CreateUserInput {
     defaultValue: ''
   })
   @IsString()
-  phone: string;
+  phone?: string;
 
   @Field({
     nullable: true,
     defaultValue: 'CLIENT'
   })
   @IsString()
-  roleId: string;
+  roleId?: string;
   
-  @Field()
+  @Field({
+    nullable: true,
+    defaultValue: ''
+  })
   @IsString()
   @MinLength(6)
   @MaxLength(50)
@@ -62,13 +65,13 @@ export class CreateUserInput {
       /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
       message: 'The password must have a Uppercase, lowercase letter and a number'
   })
-  password: string;
+  password?: string;
 
   @Field({
     nullable: true,
     defaultValue: ''
   })
   @IsString()
-  username: string;
+  username?: string;
 
 }
