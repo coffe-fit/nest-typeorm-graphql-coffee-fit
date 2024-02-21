@@ -5,6 +5,7 @@ import { User } from '../../users/entities/user.entity';
 import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
 import { Rutine } from 'src/rutines/entities/rutine.entity';
 import { Role } from 'src/roles/entities/role.entity';
+import { ExercisesByRutine } from 'src/exercises-by-rutine/entities/exercises-by-rutine.entity';
 
 @Entity()
 export class Exercise {
@@ -20,9 +21,20 @@ export class Exercise {
   @IsUrl()
   imgGood: string;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true
+  })
   @IsUrl()
   imgBad: string;
+
+  
+  @Column({
+    default: '',
+    nullable: true
+  })
+  @IsUrl()
+  movie: string;
 
   @Column('bool',{
     default: true
@@ -42,6 +54,6 @@ export class Exercise {
   @OneToMany(() => Role, (role) => role.exercise)
   role: Role[];
 
-  @OneToMany(() => Rutine, (rutine) => rutine.exercise)
-  rutine: Rutine[];
+  @OneToMany(() => ExercisesByRutine, (exercisesByRutine) => exercisesByRutine.exercise)
+  exercisesByRutine?: ExercisesByRutine[];
 }

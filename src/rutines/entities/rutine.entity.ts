@@ -5,9 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { User } from '../../users/entities/user.entity';
 import { Company } from '../../companies/entities/company.entity';
 import { Role } from '../../roles/entities/role.entity';
-import { RutineDetail } from 'src/rutines_detail/entities/rutines_detail.entity';
-import { RutinesType } from 'src/rutines_type/entities/rutines_type.entity';
-import { Exercise } from 'src/exercises/entities/exercise.entity';
+import { ExercisesByRutine } from 'src/exercises-by-rutine/entities/exercises-by-rutine.entity';
 
 @Entity()
 export class Rutine {
@@ -20,13 +18,7 @@ export class Rutine {
     default: null,
     nullable: true
   })
-  names: String;
-
-  @Column()
-  imgGood: String;
-
-  @Column()
-  imgBad: String;
+  name: String;
 
   @Column({ type: 'timestamp' })
   dateIni: Date;
@@ -38,13 +30,37 @@ export class Rutine {
   days: Number;
 
   @Column()
-  series: Number;
-
-  @Column()
-  amountRepeat: Number;
-
-  @Column()
   obs: String;
+
+  @Column({
+    default: 0,
+    nullable: true
+  })
+  frecuency: Number;
+
+  @Column({
+    default: true,
+    nullable: true
+  })
+  active: Boolean;
+
+  @Column({
+    default: 0,
+    nullable: true
+  })
+  intensity: Number;
+
+  @Column({
+    default: 0,
+    nullable: true
+  })
+  maxDuration: Number;
+
+  @Column({
+    default: 0,
+    nullable: true
+  })
+  cardiacFrec: Number;
 
   @ManyToOne(() => User, (user) => user.rutines)
   @JoinColumn()
@@ -66,19 +82,7 @@ export class Rutine {
   @JoinColumn()
   role3: Role;
 
-  @ManyToOne(() => Exercise, (exercise) => exercise.rutine)
-  @JoinColumn()
-  exercise: Exercise;
-
-  @ManyToOne(() => RutinesType, (rutineType) => rutineType.rutines)
-  @JoinColumn()
-  rutineType: RutinesType;
-
-  @OneToOne(() => RutineDetail, (rutineDetail) => rutineDetail.rutine, {
-    cascade: true,
-    eager: true,
-  })
-  @JoinColumn()
-  rutineDetail: RutineDetail;
+  @OneToMany(() => ExercisesByRutine, (exercisesByRutine) => exercisesByRutine.rutine)
+  exercisesByRutine?: ExercisesByRutine[];
 }
 

@@ -4,6 +4,8 @@ import { CreateExerciseInput } from './dto/create-exercise.input';
 import { UpdateExerciseInput } from './dto/update-exercise.input';
 import { Exercise } from './entities/exercise.entity';
 import { ExerciseType } from './exercise.type';
+import { ActiveUser } from '../auth/decorators/active-user.decorator';
+import { ActiveUserGuard } from '../auth/guards/active-user.guard';
 import { FirebaseAuthGuard } from '../auth/decorators/firebase.decorators';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
@@ -18,7 +20,8 @@ export class ExercisesResolver {
   }
 
   @Query(returns => [ExerciseType])
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
+  // @UseGuards(FirebaseAuthGuard)
   async exercise_findAll(): Promise<Exercise[]> {
     return this.exerciseService.getAllExercises();
   }

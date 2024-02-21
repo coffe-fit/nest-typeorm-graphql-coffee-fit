@@ -1,9 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsString, IsUUID, IsUrl } from 'class-validator';
-import { CompanyType } from 'src/companies/company.type';
-import { roleType } from 'src/roles/role.type';
-import { RutineType } from '../types/rutine.type';
-import { CreateRutinesDetailInput } from 'src/rutines_detail/dto/create-rutines_detail.input';
+import { IsDate, IsNumber, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateRutineInput {
@@ -29,18 +25,6 @@ export class CreateRutineInput {
   days?: number;
   
   @Field()
-  @IsUUID()
-  exerciseId?: string;
-
-  @Field()
-  @IsUrl()
-  imgGood?: string;
-
-  @Field()
-  @IsUrl()
-  imgBad?: string;
-  
-  @Field()
   @IsString()
   obs: string;
   
@@ -55,14 +39,10 @@ export class CreateRutineInput {
   @Field()
   @IsUUID()
   roleId3?: string;
-
-  @Field()
-  @IsUUID()
-  rutineTypeId?: string;
   
   @Field()
   @IsString()
-  names?: string;
+  name?: string;
 
   @Field()
   @IsNumber()

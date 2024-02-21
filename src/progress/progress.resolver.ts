@@ -8,10 +8,10 @@ import { ProgressType } from './progress.type';
 export class ProgressResolver {
   constructor(private readonly progressService: ProgressService) {}
 
-  @Mutation(returns => ProgressType)
-  progress_create(@Args('createProgressInput') createProgressInput: CreateProgressInput) {
-    return this.progressService.createProgress(createProgressInput);
-  }
+  // @Mutation(returns => ProgressType)
+  // progress_create(@Args('createProgressInput') createProgressInput: CreateProgressInput) {
+  //   return this.progressService.createProgress(createProgressInput);
+  // }
 
   @Query(returns => [ProgressType])
   progress_findAll() {
@@ -23,15 +23,15 @@ export class ProgressResolver {
     return this.progressService.findByIdProgress(id);
   }
 
-  @Mutation(returns => ProgressType)
-  progress_update(
-    @Args('progressId') id: string,
-    @Args('updateProgressInput') updateProgressInput: UpdateProgressInput) {
-    return this.progressService.updateProgress(id, updateProgressInput);
-  }
+  // @Mutation(returns => ProgressType)
+  // progress_update(
+  //   @Args('progressId') id: string,
+  //   @Args('updateProgressInput') updateProgressInput: UpdateProgressInput) {
+  //   return this.progressService.updateProgress(id, updateProgressInput);
+  // }
 
-  @Mutation(returns => ProgressType)
-  progress_delete(@Args('progressId') id: string) {
-    return this.progressService.removeProgress(id);
-  }
+  // @Mutation(returns => ProgressType)
+  // progress_delete(@Args('progressId') id: string) {
+  //   return this.progressService.removeProgress(id);
+  // }
 }

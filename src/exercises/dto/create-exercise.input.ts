@@ -19,6 +19,10 @@ export class CreateExerciseInput {
   imgBad: string;
 
   @Field()
+  @IsUrl()
+  movie: string;
+
+  @Field()
   @IsUUID()
   userCreatorId: string;
 

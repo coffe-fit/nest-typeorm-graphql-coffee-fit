@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -15,7 +15,7 @@ import { UsersModule } from 'src/users/users.module';
 @Module({
   providers: [AuthResolver, AuthService, FirebaseService, JwtStrategy, FirebaseStrategy],
   imports: [
-    UsersModule,
+    forwardRef(() => UsersModule),
     ConfigModule,
     TypeOrmModule.forFeature([User, Auth]),
     PassportModule.register({defaultStrategy: 'jwt'}),

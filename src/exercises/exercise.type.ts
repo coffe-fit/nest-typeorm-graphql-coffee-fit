@@ -26,6 +26,11 @@ export class ExerciseType {
   @IsBoolean()
   active: boolean;
 
+
+  @Field()
+  @IsUrl()
+  movie: string;
+
   @Field()
   activeByCompany: boolean;
 

@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import { Rutine } from "src/rutines/entities/rutine.entity";
+import { ExercisesByRutine } from "src/exercises-by-rutine/entities/exercises-by-rutine.entity";
 
 @Entity()
 export class RutinesType {
@@ -12,7 +13,7 @@ export class RutinesType {
 
   @Column('text')
   name: String;
-
-  @OneToMany(() => Rutine, (rutine) => rutine.rutineType)
-  rutines: Rutine[];
+  
+  @OneToMany(() => ExercisesByRutine, (exercisesByRutine) => exercisesByRutine.rutineType)
+  exercisesByRutine?: ExercisesByRutine[];
 }

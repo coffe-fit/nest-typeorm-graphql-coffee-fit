@@ -47,7 +47,8 @@ export class AuthService {
     // para que me retorne solo la data que necesito
     let user = await this.userRepository.findOne({
       where: {email}, //  manda la condición del email
-      select: {email: true, password: true, id: true} // seleccione los campos que interesan 
+      select: {email: true, password: true, id: true}, // seleccione los campos que interesan 
+      relations: ['role']
     });
     if (!user) {
       user = await this.userService.createUser({
@@ -63,6 +64,7 @@ export class AuthService {
     return {...user, token: this.getJwtToken({
       id: user.id,
       email: user.email,
+      roleName: user.role.name,
       foranyToken
     })};
   }

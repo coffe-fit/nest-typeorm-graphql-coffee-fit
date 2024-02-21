@@ -47,6 +47,13 @@ export class UsersResolver {
     return this.usersService.getAllUsers();
   }
 
+  @Query(returns => [UsersType])
+  @UseGuards(JwtAuthGuard)
+  user_findAllByRoleClient() {
+    const roles = ['CLIENT', 'NEW_CLIENT', 'INACTIVE_CLIENT']
+    return this.usersService.getAllUsersByRoles(roles);
+  }
+  
   @Mutation(returns => UsersType)
   user_update(
     @Args('userId') id: string,

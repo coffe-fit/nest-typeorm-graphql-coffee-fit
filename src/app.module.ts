@@ -11,7 +11,6 @@ import { UsersModule } from './users/users.module';
 import { CompaniesModule } from './companies/companies.module';
 import { RolesModule } from './roles/roles.module';
 import { RutinesModule } from './rutines/rutines.module';
-import { RutinesDetailModule } from './rutines_detail/rutines_detail.module';
 import { RutinesTypeModule } from './rutines_type/rutines_type.module';
 import { ExercisesModule } from './exercises/exercises.module';
 // // import { SeedModule } from './seed/seed.module';
@@ -19,6 +18,7 @@ import { ProgressModule } from './progress/progress.module';
 
 import {options as ormconfig} from '../ormconfig';
 import { AuthModule } from './auth/auth.module';
+import { ExercisesByRutineModule } from './exercises-by-rutine/exercises-by-rutine.module';
 
 @Module({
   imports: [
@@ -46,11 +46,11 @@ import { AuthModule } from './auth/auth.module';
     CompaniesModule,
     RolesModule,
     RutinesModule,
-    RutinesDetailModule,
     RutinesTypeModule,
     ExercisesModule,
     ProgressModule,
     AuthModule,
+    ExercisesByRutineModule,
     // SeedModule,
   ],
   controllers: [],

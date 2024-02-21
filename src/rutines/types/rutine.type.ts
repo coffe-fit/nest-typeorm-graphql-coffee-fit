@@ -1,10 +1,8 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { IsDateString, IsNumber } from 'class-validator';
 import { CompanyType } from 'src/companies/company.type';
-import { ExerciseType } from 'src/exercises/exercise.type';
+import { ExercisesByRutineType } from 'src/exercises-by-rutine/types/exercises-by-rutine.type';
 import { roleType } from 'src/roles/role.type';
-import { RutinesDetailType } from 'src/rutines_detail/rutines_detail.type';
-import { RutinesTypeType } from 'src/rutines_type/rutines_type.type';
 import { UsersType } from 'src/users/users.type';
 
 @ObjectType('rutines')
@@ -14,12 +12,6 @@ export class RutineType{
 
   @Field({nullable: true})
   name: string;
-
-  @Field()
-  imgGood?: string;
-
-  @Field()
-  imgBad?: string;
 
   @Field()
   @IsDateString()
@@ -32,17 +24,12 @@ export class RutineType{
   @Field()
   @IsDateString()
   days?: number;
-
-  @Field()
-  @IsNumber()
-  series?: number;
-
-  @Field()
-  @IsNumber()
-  amountRepeat?: number;
   
   @Field()
   obs: string;
+  
+  @Field()
+  active: boolean;
 
   @Field(() => UsersType)
   user?: UsersType;
@@ -58,13 +45,7 @@ export class RutineType{
   
   @Field(() => CompanyType)
   company?: CompanyType;
-
-  @Field(() => RutinesTypeType)
-  rutineType?: RutinesTypeType;
-
-  @Field(() => ExerciseType)
-  exercise?: ExerciseType;
-
-  @Field(() => RutinesDetailType)
-  rutineDetail?: RutinesDetailType;
+  
+  @Field(() => ExercisesByRutineType)
+  exercisesByRutine?: ExercisesByRutineType;
 }

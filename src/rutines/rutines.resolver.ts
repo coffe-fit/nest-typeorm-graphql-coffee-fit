@@ -4,9 +4,10 @@ import { CreateRutineInput } from './dto/create-rutine.input';
 import { UpdateRutineInput } from './dto/update-rutine.input';
 import { Rutine } from './entities/rutine.entity';
 import { RutineType } from './types/rutine.type';
-import { RutineByUserType } from './types/rutineByUser.type';
+import { RutineOrderRutineType } from './types/rutineOrderRutine.type';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RutineOrderDaysType } from './types/rutineOrderDays.type';
 
 @Resolver(of =>  RutineType)
 export class RutinesResolver {
@@ -28,15 +29,20 @@ export class RutinesResolver {
   async rutine_findById(@Args('rutineId') id: string): Promise<Rutine> {
     return this.RutineService.getRutineById(id);
   }
-
-  @Query(returns => [RutineByUserType])
+  
+  @Query(returns => [RutineOrderRutineType])
   @UseGuards(JwtAuthGuard)
-  async rutine_findAllByUserId(@Context() context){
+  async rutine_getActualRutineOrderRutineType(@Context() context){
     const userId = context.user.id;
-    console.log(userId);
-    return await this.RutineService.getAllRutinesByUserId(userId);
+    return await this.RutineService.getActualRutineOrderRutineType(userId);
   }
 
+  @Query(returns => [RutineOrderDaysType])
+  @UseGuards(JwtAuthGuard)
+  async rutine_getActualRutineOrderDays(@Context() context){
+    const userId = context.user.id;
+    return await this.RutineService.getActualRutineOrderDays(userId);
+  }
 
   @Mutation(returns => RutineType)
   async rutine_update(

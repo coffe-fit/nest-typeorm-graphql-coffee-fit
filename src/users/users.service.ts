@@ -4,10 +4,8 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { Company } from 'src/companies/entities/company.entity';
 import { Role } from 'src/roles/entities/role.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { v4 as uuid } from 'uuid';
-import { Rutine } from 'src/rutines/entities/rutine.entity';
 import { getDataById, updateCode, getTodayFormat } from 'src/utils';
 
 @Injectable()
@@ -46,6 +44,26 @@ export class UsersService {
       relations: this.relations
     });
   }
+
+  async getAllUsersByRoles(roles: string[]): Promise<User[]> {
+    const Role = await this.RoleRepository.find({
+      where: { name: In(roles)}
+    });
+    
+    const arryRolesId: string[] = []
+    Role.forEach(Role => {
+      console.log(Role);
+      arryRolesId.push(Role?.id)
+    });
+    
+    return await this.userRepository.find({
+      where: {
+        role: {id: In(arryRolesId)},
+        active: true
+      }
+    });
+  }
+
   async updateUser(userId: string, updateUserInput:UpdateUserInput): Promise<User> {
     let { ...toUpdate } = updateUserInput;
     const user = await updateCode(

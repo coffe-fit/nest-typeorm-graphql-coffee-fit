@@ -7,6 +7,7 @@ import { Rutine } from "src/rutines/entities/rutine.entity";
 import { Exercise } from "src/exercises/entities/exercise.entity";
 import { Progress } from "src/progress/entities/progress.entity";
 import { Auth } from "src/auth/entities/auth.entity";
+import { ExercisesByRutine } from "src/exercises-by-rutine/entities/exercises-by-rutine.entity";
 
 @Entity()
 export class User {
@@ -79,6 +80,9 @@ export class User {
 
   @OneToMany(() => Auth, (auth) => auth.user)
   auth?: Auth[];
+
+  @OneToMany(() => ExercisesByRutine, (exercisesByRutine) => exercisesByRutine.user)
+  exercisesByRutine?: ExercisesByRutine[];
 
   @BeforeInsert()
   checkUserInsert() {
