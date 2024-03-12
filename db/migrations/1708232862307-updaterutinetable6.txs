@@ -1,0 +1,14 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Updaterutinetable61708232862307 implements MigrationInterface {
+    name = 'Updaterutinetable61708232862307'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "active" boolean DEFAULT true`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "active"`);
+    }
+
+}

@@ -65,9 +65,6 @@ export class RutineService {
     rutineTypeName: string; exercises:any, days:any
     name: String, dateIni: Date, dateEnd: Date
   }[]> {
-    const rutines = await this.getActualRutine(userId);
-    const exercises = await this.getExercisesByRutine(rutines[0].id)
-    
     const result: {
       rutineTypeName: any,
       exercises: any,
@@ -76,25 +73,38 @@ export class RutineService {
       dateIni: Date,
       dateEnd: Date
     }[] = [];
-
-    // Obtener RutineTipeId únicos
-    const uniqueTypeIds = this.getUniqueTypeId(exercises);
-
-
-    // Iterar sobre cada RutineTipeId único
-    uniqueTypeIds.forEach(typeId => {
-      // Filtrar elementos por RutineTipeId y agregar al resultado
-      const filteredItems = exercises.filter(item => item.rutineType && item.rutineType?.id === typeId);
-      const days = [...new Set(filteredItems.map(item => item.days))];
-      result.push({ 
-        rutineTypeName: filteredItems[0].rutineType?.name,
-        days,
-        exercises: filteredItems,
-        name: rutines[0].name,
-        dateIni: rutines[0].dateIni,
-        dateEnd: rutines[0].dateEnd,
+    try {
+      const rutines: Rutine[] = await this.getActualRutine(userId);
+      if (rutines.length === 0) {
+        throw('sin rutinas');
+      }
+      
+      const exercises = await this.getExercisesByRutine(rutines[0].id);  
+      
+  
+      // Obtener RutineTipeId únicos
+      const uniqueTypeIds = this.getUniqueTypeId(exercises);
+  
+  
+      // Iterar sobre cada RutineTipeId único
+      uniqueTypeIds.forEach(typeId => {
+        // Filtrar elementos por RutineTipeId y agregar al resultado
+        const filteredItems = exercises.filter(item => item.rutineType && item.rutineType?.id === typeId);
+        const days = [...new Set(filteredItems.map(item => item.days))];
+        result.push({ 
+          rutineTypeName: filteredItems[0].rutineType?.name,
+          days,
+          exercises: filteredItems,
+          name: rutines[0].name,
+          dateIni: rutines[0].dateIni,
+          dateEnd: rutines[0].dateEnd,
+        });
       });
-    });
+    } catch (error) {
+      console.log(error, '-');
+      return []
+    }
+    
     
     return result
   }

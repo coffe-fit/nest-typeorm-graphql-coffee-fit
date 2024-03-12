@@ -3,7 +3,7 @@ import { IsDateString, IsNumber } from 'class-validator';
 import { CompanyType } from 'src/companies/company.type';
 import { ExercisesByRutineType } from 'src/exercises-by-rutine/types/exercises-by-rutine.type';
 import { roleType } from 'src/roles/role.type';
-import { UsersType } from 'src/users/users.type';
+import { UsersType } from 'src/users/types/users.type';
 
 @ObjectType('rutines')
 export class RutineType{

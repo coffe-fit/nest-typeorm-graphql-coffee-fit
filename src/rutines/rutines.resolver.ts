@@ -34,6 +34,9 @@ export class RutinesResolver {
   @UseGuards(JwtAuthGuard)
   async rutine_getActualRutineOrderRutineType(@Context() context){
     const userId = context.user.id;
+    if (!userId) {
+      console.log('the Id in rutine_getActualRutineOrderRutineType missin ');
+    }
     return await this.RutineService.getActualRutineOrderRutineType(userId);
   }
 
@@ -41,6 +44,8 @@ export class RutinesResolver {
   @UseGuards(JwtAuthGuard)
   async rutine_getActualRutineOrderDays(@Context() context){
     const userId = context.user.id;
+    console.log(userId);
+    
     return await this.RutineService.getActualRutineOrderDays(userId);
   }
 

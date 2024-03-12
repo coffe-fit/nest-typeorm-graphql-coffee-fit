@@ -17,5 +17,6 @@ import { ExercisesByRutine } from 'src/exercises-by-rutine/entities/exercises-by
     ])
   ],
   providers: [RutinesResolver, RutineService],
+  exports: [RutineService, TypeOrmModule],
 })
 export class RutinesModule {}

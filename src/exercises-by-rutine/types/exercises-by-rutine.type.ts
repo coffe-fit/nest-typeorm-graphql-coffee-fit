@@ -3,7 +3,7 @@ import { IsArray, IsDate, IsNumber, IsString, IsUUID } from "class-validator";
 import { ExerciseType } from "src/exercises/exercise.type";
 import { RutineType } from "src/rutines/types/rutine.type";
 import { RutinesTypeType } from "src/rutines_type/rutines_type.type";
-import { UsersType } from "src/users/users.type";
+import { UsersType } from "src/users/types/users.type";
 
 @ObjectType('exerciseByRutine')
 export class ExercisesByRutineType {

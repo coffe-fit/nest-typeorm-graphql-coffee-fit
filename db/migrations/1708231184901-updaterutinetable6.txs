@@ -1,0 +1,16 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Updaterutinetable61708231184901 implements MigrationInterface {
+    name = 'Updaterutinetable61708231184901'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "rutine" DROP CONSTRAINT "FK_0e7f5cf34df3f6385e15faf274d"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "exerciseId"`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "exerciseId" uuid`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD CONSTRAINT "FK_0e7f5cf34df3f6385e15faf274d" FOREIGN KEY ("exerciseId") REFERENCES "exercise"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+    }
+
+}

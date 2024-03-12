@@ -6,15 +6,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Company } from 'src/companies/entities/company.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import { AuthModule } from 'src/auth/auth.module';
+import { Rutine } from 'src/rutines/entities/rutine.entity';
+import { RutinesModule } from 'src/rutines/rutines.module';
 
 @Module({
   imports: [
     AuthModule,
+    RutinesModule,
     TypeOrmModule.forFeature([
       User,
       Company,
       Role,
-      // Rutine
+      Rutine
     ])
   ],
   providers: [UsersResolver, UsersService],

@@ -32,10 +32,6 @@ type Users {
   company: companies!
 }
 
-type auth {
-  token: String!
-}
-
 type exercises {
   id: ID!
   name: String!
@@ -45,28 +41,6 @@ type exercises {
   movie: String!
   activeByCompany: Boolean!
   userCreator: Users!
-}
-
-type rutinesType {
-  id: String!
-  active: Boolean!
-  name: String!
-}
-
-type exerciseByRutine {
-  id: String
-  days: Float!
-  series: Float!
-  amountRepeat: [Int!]!
-  weightByKilos: Float!
-  break: String!
-  amountRepeatMax: [Int!]!
-  weightByKilosMax: Float!
-  obs: String!
-  rutine: rutines!
-  exercise: exercises!
-  user: Users!
-  rutineType: rutinesType!
 }
 
 type rutines {
@@ -90,6 +64,28 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type rutinesType {
+  id: String!
+  active: Boolean!
+  name: String!
+}
+
+type exerciseByRutine {
+  id: String
+  days: Float!
+  series: Float!
+  amountRepeat: [Int!]!
+  weightByKilos: Float!
+  break: String!
+  amountRepeatMax: [Int!]!
+  weightByKilosMax: Float!
+  obs: String!
+  rutine: rutines!
+  exercise: exercises!
+  user: Users!
+  rutineType: rutinesType!
+}
+
 type rutineOrderRutineType {
   rutineTypeName: String!
   exercises: [exerciseByRutine!]!
@@ -97,6 +93,23 @@ type rutineOrderRutineType {
   name: String
   dateIni: DateTime!
   dateEnd: DateTime!
+}
+
+type UsersRutines {
+  id: String!
+  username: String!
+  document: String!
+  gender: String!
+  email: String!
+  phone: String!
+  age: Float!
+  role: roles!
+  company: companies!
+  rutines: [rutineOrderRutineType!]!
+}
+
+type auth {
+  token: String!
 }
 
 type exercisesByRutineTypeType {
@@ -121,16 +134,16 @@ type progress {
 
 type Query {
   user_findAll: [Users!]!
-  user_findAllByRoleClient: [Users!]!
+  user_findAllByRoleClient: [UsersRutines!]!
   auth_signOut(userId: String!): auth!
-  company_findAll: [companies!]!
-  company_findById(companyId: String!): companies!
-  role_findAll: [roles!]!
-  role_findById(roleId: String!): roles!
   rutine_findAll: [rutines!]!
   rutine_findById(rutineId: String!): rutines!
   rutine_getActualRutineOrderRutineType: [rutineOrderRutineType!]!
   rutine_getActualRutineOrderDays: [rutineOrderDaysType!]!
+  company_findAll: [companies!]!
+  company_findById(companyId: String!): companies!
+  role_findAll: [roles!]!
+  role_findById(roleId: String!): roles!
   rutineType_findAll: [rutinesType!]!
   rutineType_findById(id: String!): rutinesType!
   exercise_findAll: [exercises!]!
@@ -147,15 +160,15 @@ type Mutation {
   auth_signIn(signInAuthInput: CreateAuthInput!): auth!
   auth_signInForanyToken(signInAuthInput: AuthForanyToken!): auth!
   auth_signUp(createUserInput: CreateUserInput!): auth!
+  rutine_create(createRutineInput: CreateRutineInput!): rutines!
+  rutine_update(rutineId: String!, updateRutineInput: UpdateRutineInput!): rutines!
+  rutine_delete(rutineId: String!): rutines!
   company_create(createCompanyInput: CreateCompanyInput!): companies!
   company_update(companyId: String!, updateCompanyInput: UpdateCompanyInput!): companies!
   company_delete(companyId: String!): companies!
   role_create(createRoleInput: CreateRoleInput!): roles!
   role_update(roleId: String!, updateRoleInput: UpdateRoleInput!): roles!
   role_delete(roleId: String!): roles!
-  rutine_create(createRutineInput: CreateRutineInput!): rutines!
-  rutine_update(rutineId: String!, updateRutineInput: UpdateRutineInput!): rutines!
-  rutine_delete(rutineId: String!): rutines!
   rutineType_create(createRutineTypeInput: CreateRutinesTypeInput!): rutinesType!
   rutineType_update(rutinesTypeId: String!, updateRutinesTypeInput: UpdateRutinesTypeInput!): rutinesType!
   exercise_delete(exerciseId: String!): exercises!
@@ -199,38 +212,6 @@ input AuthForanyToken {
   username: String = ""
 }
 
-input CreateCompanyInput {
-  active: Boolean = true
-  address: String!
-  companyLead: String = ""
-  email: String!
-  logo: String!
-  name: String!
-  nameId: String!
-  nit: String!
-  phone: String!
-}
-
-input UpdateCompanyInput {
-  active: Boolean
-  address: String
-  companyLead: String
-  email: String
-  logo: String
-  name: String
-  nit: String
-  phone: String
-}
-
-input CreateRoleInput {
-  name: String!
-}
-
-input UpdateRoleInput {
-  active: Boolean
-  name: String
-}
-
 input CreateRutineInput {
   amountRepeat: Float!
   companyId: String!
@@ -263,6 +244,38 @@ input UpdateRutineInput {
   names: String
   series: Float
   userId: String
+}
+
+input CreateCompanyInput {
+  active: Boolean = true
+  address: String!
+  companyLead: String = ""
+  email: String!
+  logo: String!
+  name: String!
+  nameId: String!
+  nit: String!
+  phone: String!
+}
+
+input UpdateCompanyInput {
+  active: Boolean
+  address: String
+  companyLead: String
+  email: String
+  logo: String
+  name: String
+  nit: String
+  phone: String
+}
+
+input CreateRoleInput {
+  name: String!
+}
+
+input UpdateRoleInput {
+  active: Boolean
+  name: String
 }
 
 input CreateRutinesTypeInput {

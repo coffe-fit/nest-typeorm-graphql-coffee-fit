@@ -1,0 +1,52 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Exercisebyrutine1708181618296 implements MigrationInterface {
+    name = 'Exercisebyrutine1708181618296'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`CREATE TABLE "exercises_by_rutine" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "days" integer NOT NULL, "series" integer NOT NULL, "amountRepeat" integer NOT NULL, "weightByKilos" character varying NOT NULL, "amountRepeatMax" integer, "weightByKilosMax" character varying, "obs" character varying NOT NULL, "break" character varying NOT NULL, "userId" uuid, "exerciseId" uuid, "rutineTypeId" uuid, "rutineId" uuid, CONSTRAINT "PK_64a630067c2d834e437f529505a" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "auth" ("id" uuid NOT NULL, "tokenAuth" text NOT NULL, "userId" uuid, CONSTRAINT "PK_7e416cf6172bc5aec04244f6459" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "nameid"`);
+        await queryRunner.query(`ALTER TABLE "company" ALTER COLUMN "nameId" SET NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "company" ADD CONSTRAINT "UQ_6031a15e873d126b990ac493d22" UNIQUE ("nameId")`);
+        await queryRunner.query(`ALTER TABLE "role" ADD CONSTRAINT "UQ_ae4578dcaed5adff96595e61660" UNIQUE ("name")`);
+        await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "active"`);
+        await queryRunner.query(`ALTER TABLE "user" ADD "active" boolean NOT NULL DEFAULT true`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "username" SET DEFAULT ''`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "document" SET DEFAULT ''`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "gender" SET DEFAULT 'MEN'`);
+        await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email")`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "phone" SET DEFAULT ''`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "age" SET DEFAULT '0'`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "password" SET DEFAULT ''`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ADD CONSTRAINT "FK_088924e9fec7e9f4dd489d556bf" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ADD CONSTRAINT "FK_5bf803858b1bbe3c0955748560b" FOREIGN KEY ("exerciseId") REFERENCES "exercise"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ADD CONSTRAINT "FK_fb5a6c400631229f76196ecbd46" FOREIGN KEY ("rutineTypeId") REFERENCES "rutines_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ADD CONSTRAINT "FK_a27eeac3926aedd25153dac1a4c" FOREIGN KEY ("rutineId") REFERENCES "rutine"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "auth" ADD CONSTRAINT "FK_373ead146f110f04dad60848154" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "auth" DROP CONSTRAINT "FK_373ead146f110f04dad60848154"`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" DROP CONSTRAINT "FK_a27eeac3926aedd25153dac1a4c"`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" DROP CONSTRAINT "FK_fb5a6c400631229f76196ecbd46"`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" DROP CONSTRAINT "FK_5bf803858b1bbe3c0955748560b"`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" DROP CONSTRAINT "FK_088924e9fec7e9f4dd489d556bf"`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "password" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "age" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "phone" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22"`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "gender" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "document" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "username" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "active"`);
+        await queryRunner.query(`ALTER TABLE "user" ADD "active" text NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "role" DROP CONSTRAINT "UQ_ae4578dcaed5adff96595e61660"`);
+        await queryRunner.query(`ALTER TABLE "company" DROP CONSTRAINT "UQ_6031a15e873d126b990ac493d22"`);
+        await queryRunner.query(`ALTER TABLE "company" ALTER COLUMN "nameId" DROP NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "user" ADD "nameid" text`);
+        await queryRunner.query(`DROP TABLE "auth"`);
+        await queryRunner.query(`DROP TABLE "exercises_by_rutine"`);
+    }
+
+}

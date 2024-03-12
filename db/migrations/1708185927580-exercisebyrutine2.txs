@@ -1,0 +1,20 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Exercisebyrutine21708185927580 implements MigrationInterface {
+    name = 'Exercisebyrutine21708185927580'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" DROP COLUMN "amountRepeat"`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ADD "amountRepeat" integer array NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" DROP COLUMN "amountRepeatMax"`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ADD "amountRepeatMax" integer array`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" DROP COLUMN "amountRepeatMax"`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ADD "amountRepeatMax" integer`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" DROP COLUMN "amountRepeat"`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ADD "amountRepeat" integer NOT NULL`);
+    }
+
+}

@@ -1,0 +1,28 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Updaterutinetable51708230813433 implements MigrationInterface {
+    name = 'Updaterutinetable51708230813433'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "rutine" DROP CONSTRAINT "FK_0b39d0d7127c83391639b870679"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP CONSTRAINT "FK_47c713d4bc5ffbbe3793df55723"`);
+        await queryRunner.query(`ALTER TABLE "rutine_detail" DROP CONSTRAINT "FK_dc14b24cb9df904efd4a064d602"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "rutineTypeId"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP CONSTRAINT "UQ_47c713d4bc5ffbbe3793df55723"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "rutineDetailId"`);
+        await queryRunner.query(`ALTER TABLE "rutine_detail" DROP CONSTRAINT "UQ_dc14b24cb9df904efd4a064d602"`);
+        await queryRunner.query(`ALTER TABLE "rutine_detail" DROP COLUMN "rutineId"`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "rutine_detail" ADD "rutineId" uuid`);
+        await queryRunner.query(`ALTER TABLE "rutine_detail" ADD CONSTRAINT "UQ_dc14b24cb9df904efd4a064d602" UNIQUE ("rutineId")`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "rutineDetailId" uuid`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD CONSTRAINT "UQ_47c713d4bc5ffbbe3793df55723" UNIQUE ("rutineDetailId")`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "rutineTypeId" uuid`);
+        await queryRunner.query(`ALTER TABLE "rutine_detail" ADD CONSTRAINT "FK_dc14b24cb9df904efd4a064d602" FOREIGN KEY ("rutineId") REFERENCES "rutine"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD CONSTRAINT "FK_47c713d4bc5ffbbe3793df55723" FOREIGN KEY ("rutineDetailId") REFERENCES "rutine_detail"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD CONSTRAINT "FK_0b39d0d7127c83391639b870679" FOREIGN KEY ("rutineTypeId") REFERENCES "rutines_type"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+    }
+
+}

@@ -1,0 +1,20 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Updaterutinetable41708230265797 implements MigrationInterface {
+    name = 'Updaterutinetable41708230265797'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "frecuency" integer DEFAULT '0'`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "intensity" integer DEFAULT '0'`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "maxDuration" integer DEFAULT '0'`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "cardiacFrec" integer DEFAULT '0'`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "cardiacFrec"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "maxDuration"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "intensity"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "frecuency"`);
+    }
+
+}

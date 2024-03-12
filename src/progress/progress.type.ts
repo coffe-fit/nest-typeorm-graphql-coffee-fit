@@ -1,6 +1,6 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { IsDate, IsNumber, IsString, IsUUID } from "class-validator";
-import { UsersType } from "src/users/users.type";
+import { UsersType } from "src/users/types/users.type";
 
 @ObjectType('progress')
 export class ProgressType {

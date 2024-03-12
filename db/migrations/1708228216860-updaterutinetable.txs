@@ -1,0 +1,26 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Updaterutinetable1708228216860 implements MigrationInterface {
+    name = 'Updaterutinetable1708228216860'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "series"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "amountRepeat"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "imgGood"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "imgBad"`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "names"`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "name" character varying(100)`);
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ALTER COLUMN "weightByKilos" DROP NOT NULL`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "exercises_by_rutine" ALTER COLUMN "weightByKilos" SET NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "rutine" DROP COLUMN "name"`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "names" character varying(100)`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "imgBad" character varying NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "imgGood" character varying NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "amountRepeat" integer NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "rutine" ADD "series" integer NOT NULL`);
+    }
+
+}

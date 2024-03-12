@@ -5,11 +5,12 @@ import { IsString, IsNumber} from 'class-validator';
 import { CompanyType } from 'src/companies/company.type';
 import { Role } from 'src/roles/entities/role.entity';
 import { roleType } from 'src/roles/role.type';
+import { RutineOrderRutineType } from 'src/rutines/types/rutineOrderRutine.type';
 
 
 
-@ObjectType('Users')
-export class UsersType {
+@ObjectType('UsersRutines')
+export class UsersRutinesType {
   @Field({
     nullable: false,
     defaultValue: '' })
@@ -45,4 +46,7 @@ export class UsersType {
   
   @Field(() => CompanyType)
   company?: CompanyType;
+
+  @Field(() => [RutineOrderRutineType])
+  rutines: RutineOrderRutineType[];
 }

@@ -7,11 +7,15 @@ import { Role } from 'src/roles/entities/role.entity';
 import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getDataById, updateCode, getTodayFormat } from 'src/utils';
+import { Rutine } from 'src/rutines/entities/rutine.entity';
+import { RutineService } from 'src/rutines/rutines.service';
 
 @Injectable()
 export class UsersService {
   constructor(
-    // @InjectRepository(Rutine) private rutineRepository: Repository<Rutine>,
+    private readonly rutineService: RutineService,
+
+    @InjectRepository(Rutine) private rutineRepository: Repository<Rutine>,
     @InjectRepository(Company) private CompanyRepository: Repository<Company>,
     @InjectRepository(Role) private RoleRepository: Repository<Role>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
@@ -45,23 +49,34 @@ export class UsersService {
     });
   }
 
-  async getAllUsersByRoles(roles: string[]): Promise<User[]> {
+  async getAllUsersByRoles(roles: string[]): Promise<any> {
     const Role = await this.RoleRepository.find({
       where: { name: In(roles)}
     });
     
     const arryRolesId: string[] = []
     Role.forEach(Role => {
-      console.log(Role);
       arryRolesId.push(Role?.id)
     });
-    
-    return await this.userRepository.find({
+
+    const users = await this.userRepository.find({
       where: {
         role: {id: In(arryRolesId)},
         active: true
       }
     });
+
+    const jjjj= users.map(async (user: User) => {
+      const rutines = await this.rutineService.getActualRutineOrderRutineType(user.id);
+      console.log(rutines, 'jjjj');
+      return {
+        ...user,
+        rutines: rutines
+      }
+    });
+    console.log(await Promise.all(jjjj), '---------------------------');
+    const ajsald = await Promise.all(jjjj)
+    return ajsald
   }
 
   async updateUser(userId: string, updateUserInput:UpdateUserInput): Promise<User> {

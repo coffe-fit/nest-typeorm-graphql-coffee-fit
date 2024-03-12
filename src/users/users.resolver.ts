@@ -2,7 +2,8 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UsersType } from './users.type';
+import { UsersType } from './types/users.type';
+import { UsersRutinesType } from './types/usersRutines.type';
 import { User } from './entities/user.entity';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -47,10 +48,10 @@ export class UsersResolver {
     return this.usersService.getAllUsers();
   }
 
-  @Query(returns => [UsersType])
-  @UseGuards(JwtAuthGuard)
+  @Query(returns => [UsersRutinesType])
+  // @UseGuards(JwtAuthGuard)
   user_findAllByRoleClient() {
-    const roles = ['CLIENT', 'NEW_CLIENT', 'INACTIVE_CLIENT']
+    const roles = ['CLIENT', 'NEW_CLIENT', 'INACTIVE_CLIENT', 'TRAIN']
     return this.usersService.getAllUsersByRoles(roles);
   }
   

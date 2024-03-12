@@ -6,7 +6,7 @@ import { Rutine } from 'src/rutines/entities/rutine.entity';
 import { RutinesType } from 'src/rutines_type/entities/rutines_type.entity';
 import { ExercisesByRutine } from './entities/exercises-by-rutine.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersType } from 'src/users/users.type';
+import { UsersType } from 'src/users/types/users.type';
 
 @Module({
   imports: [

@@ -1,0 +1,18 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Updateexercise1708231705139 implements MigrationInterface {
+    name = 'Updateexercise1708231705139'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "exercise" ADD "movie" character varying DEFAULT ''`);
+        await queryRunner.query(`ALTER TABLE "exercise" ALTER COLUMN "imgBad" DROP NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "exercise" ALTER COLUMN "imgBad" SET DEFAULT ''`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "exercise" ALTER COLUMN "imgBad" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "exercise" ALTER COLUMN "imgBad" SET NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "exercise" DROP COLUMN "movie"`);
+    }
+
+}

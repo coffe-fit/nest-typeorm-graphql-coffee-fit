@@ -3,7 +3,7 @@
 
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { IsBoolean, IsNotEmpty, IsString, IsUrl, ValidateIf } from 'class-validator';
-import { UsersType } from 'src/users/users.type';
+import { UsersType } from 'src/users/types/users.type';
 
 @ObjectType('exercises')
 export class ExerciseType {
