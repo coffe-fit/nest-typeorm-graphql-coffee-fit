@@ -148,6 +148,7 @@ type Query {
   rutineType_findById(id: String!): rutinesType!
   exercise_findAll: [exercises!]!
   exercise_findById(exerciseId: String!): exercises!
+  exercise_findByRutineTypeId(rutineTypeId: String!): [exercises!]!
   progress_findAll: [progress!]!
   progress_findById(progressId: String!): progress!
   exercisesByRutineType_findAll: [exerciseByRutine!]!

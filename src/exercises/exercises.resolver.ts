@@ -31,6 +31,11 @@ export class ExercisesResolver {
     return this.exerciseService.getExerciseById(id);
   }
 
+  @Query(returns => [ExerciseType])
+  async exercise_findByRutineTypeId(@Args('rutineTypeId') id: string): Promise<Exercise[]>{
+    return this.exerciseService.getExerciseByRutineTypeId(id);
+  }
+
   @Mutation(returns => ExerciseType)
   async exercise_update(
     @Args('exerciseId') id: string,
