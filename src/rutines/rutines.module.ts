@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RutinesType } from 'src/rutines_type/entities/rutines_type.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { ExercisesByRutine } from 'src/exercises-by-rutine/entities/exercises-by-rutine.entity';
+import { ExerciseType } from 'src/exercises/exercise.type';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { ExercisesByRutine } from 'src/exercises-by-rutine/entities/exercises-by
     TypeOrmModule.forFeature([
       Rutine,
       RutinesType,
-      ExercisesByRutine
+      ExercisesByRutine,
+      ExerciseType
     ])
   ],
   providers: [RutinesResolver, RutineService],

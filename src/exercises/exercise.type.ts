@@ -1,7 +1,7 @@
 // export class CreateExerciseInput {}
 // exercise.graphql.dto.ts
 
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, InputType, ObjectType } from '@nestjs/graphql';
 import { IsBoolean, IsNotEmpty, IsString, IsUrl, ValidateIf } from 'class-validator';
 import { UsersType } from 'src/users/types/users.type';
 
@@ -30,6 +30,10 @@ export class ExerciseType {
   @Field()
   @IsUrl()
   movie: string;
+
+  @Field()
+  @IsUrl()
+  movie2: string;
 
   @Field()
   activeByCompany: boolean;

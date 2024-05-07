@@ -13,6 +13,9 @@ import { deleteCode, getDataById, updateCode, getDataByUserId } from 'src/utils'
 import { RutineType } from './types/rutine.type';
 import { ExercisesByRutine } from 'src/exercises-by-rutine/entities/exercises-by-rutine.entity';
 import { ExercisesByDay } from 'src/exercises-by-rutine/types/exercises-by-day.type';
+import { RutineWithExercises } from './types/rutineWithExercises.type';
+import { CreateRutineWithExercisesInput } from './dto/create-rutine-exercises';
+import { RutinesTypeType } from 'src/rutines_type/rutines_type.type';
 
 @Injectable()
 export class RutineService {
@@ -56,6 +59,46 @@ export class RutineService {
       role2: {id: roleId2} as Role,
       role3: {id: roleId3} as Role,
       ...CreateRutineInput
+    });
+    
+    return this.RutineRepository.save(Rutine);
+  }
+  
+  async createRutineWithExercises(CreateRutineInput2: CreateRutineWithExercisesInput): Promise<Rutine> {
+    let {
+      userId,
+      companyId,
+      roleId1,
+      roleId2,
+      roleId3,
+      exercises
+    } = CreateRutineInput2;
+
+    const Rutine = await this.RutineRepository.create({
+      user: {id: userId} as User,
+      company: companyId ? {id: companyId} as Company : undefined,
+      role1: roleId1 ? {id: roleId1} as Role : undefined,
+      role2: roleId3 ? {id: roleId2} as Role : undefined,
+      role3: roleId3 ? {id: roleId3} as Role : undefined,
+      ...CreateRutineInput2
+    });
+    const _rutine = await this.RutineRepository.save(Rutine);
+    exercises.forEach(async exercise  => {
+      let {
+        exerciseId,
+        rutineTypeId,
+      } = exercise;
+      const Rutiness = await this.ExercisesByRutineRepository.create({
+        user: {id: userId} as User,
+        exercise: {id: exerciseId} as Exercise,
+        rutineType: {id: rutineTypeId} as RutinesTypeType,
+        rutine: {id: _rutine.id} as Rutine,
+        weightByKilos: '',
+        obs: "",
+        ...exercise
+      });
+      await this.ExercisesByRutineRepository.save(Rutiness);
+      
     });
     
     return this.RutineRepository.save(Rutine);

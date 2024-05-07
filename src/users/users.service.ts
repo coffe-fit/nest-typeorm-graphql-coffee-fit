@@ -66,17 +66,18 @@ export class UsersService {
       }
     });
 
-    const jjjj= users.map(async (user: User) => {
+    const _rutineService= users.map(async (user: User) => {
       const rutines = await this.rutineService.getActualRutineOrderRutineType(user.id);
-      console.log(rutines, 'jjjj');
       return {
         ...user,
+        userId: user.id,
         rutines: rutines
       }
     });
-    console.log(await Promise.all(jjjj), '---------------------------');
-    const ajsald = await Promise.all(jjjj)
-    return ajsald
+    const _rutinas = await Promise.all(_rutineService)
+    console.log(_rutinas);
+    
+    return _rutinas
   }
 
   async updateUser(userId: string, updateUserInput:UpdateUserInput): Promise<User> {

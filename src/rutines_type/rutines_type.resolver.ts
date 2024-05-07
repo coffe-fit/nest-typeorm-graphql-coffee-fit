@@ -15,7 +15,9 @@ export class RutinesTypeResolver {
 
   @Query(returns => [RutinesTypeType])
   rutineType_findAll() {
-    return this.rutinesTypeService.getAllRoutineType();
+    const result = this.rutinesTypeService.getAllRoutineType()
+    console.log(result);
+    return result;
   }
 
   @Query(returns => RutinesTypeType)

@@ -7,4 +7,8 @@ export class AuthType {
   @Field()
   @IsString()
   token: string;
+
+  @Field()
+  @IsString()
+  id: string;
 }

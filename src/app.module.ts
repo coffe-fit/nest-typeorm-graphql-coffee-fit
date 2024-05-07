@@ -20,6 +20,8 @@ import {options as ormconfig} from '../ormconfig';
 import { AuthModule } from './auth/auth.module';
 import { ExercisesByRutineModule } from './exercises-by-rutine/exercises-by-rutine.module';
 
+import { SeedModule } from './seed/seed.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -51,6 +53,7 @@ import { ExercisesByRutineModule } from './exercises-by-rutine/exercises-by-ruti
     ProgressModule,
     AuthModule,
     ExercisesByRutineModule,
+    SeedModule,
     // SeedModule,
   ],
   controllers: [],

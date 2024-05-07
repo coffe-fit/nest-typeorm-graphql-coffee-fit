@@ -47,6 +47,10 @@ export class UsersRutinesType {
   @Field(() => CompanyType)
   company?: CompanyType;
 
+  @Field()
+  @IsString()
+  userId?: string;
+
   @Field(() => [RutineOrderRutineType])
   rutines: RutineOrderRutineType[];
 }

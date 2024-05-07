@@ -49,7 +49,7 @@ export class UsersResolver {
   }
 
   @Query(returns => [UsersRutinesType])
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   user_findAllByRoleClient() {
     const roles = ['CLIENT', 'NEW_CLIENT', 'INACTIVE_CLIENT', 'TRAIN']
     return this.usersService.getAllUsersByRoles(roles);

@@ -29,10 +29,12 @@ export class CreateCompanyInput {
 
   @Field()
   @IsEmail()
+  
   email: string;
 
   @Field()
   @IsUrl()
+  @ValidateIf((object,value) => value !== '')
   logo: string;
 
   @Field()

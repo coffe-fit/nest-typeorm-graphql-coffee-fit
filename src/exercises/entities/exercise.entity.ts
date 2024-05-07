@@ -36,6 +36,13 @@ export class Exercise {
   })
   @IsUrl()
   movie: string;
+  
+  @Column({
+    default: '',
+    nullable: true
+  })
+  @IsUrl()
+  movie2: string;
 
   @Column('bool',{
     default: true

@@ -39,6 +39,7 @@ type exercises {
   imgBad: String!
   active: Boolean!
   movie: String!
+  movie2: String!
   activeByCompany: Boolean!
   userCreator: Users!
 }
@@ -105,11 +106,13 @@ type UsersRutines {
   age: Float!
   role: roles!
   company: companies!
+  userId: String!
   rutines: [rutineOrderRutineType!]!
 }
 
 type auth {
   token: String!
+  id: String!
 }
 
 type exercisesByRutineTypeType {
@@ -132,6 +135,11 @@ type progress {
   user: Users!
 }
 
+type Seed {
+  """Example field (placeholder)"""
+  seed: String!
+}
+
 type Query {
   user_findAll: [Users!]!
   user_findAllByRoleClient: [UsersRutines!]!
@@ -152,6 +160,7 @@ type Query {
   progress_findAll: [progress!]!
   progress_findById(progressId: String!): progress!
   exercisesByRutineType_findAll: [exerciseByRutine!]!
+  _runSeed: [Seed!]!
 }
 
 type Mutation {
@@ -162,6 +171,7 @@ type Mutation {
   auth_signInForanyToken(signInAuthInput: AuthForanyToken!): auth!
   auth_signUp(createUserInput: CreateUserInput!): auth!
   rutine_create(createRutineInput: CreateRutineInput!): rutines!
+  rutine_create_with_exercises(createRutineWithExercisesInput: CreateRutineWithExercisesInput!): rutines!
   rutine_update(rutineId: String!, updateRutineInput: UpdateRutineInput!): rutines!
   rutine_delete(rutineId: String!): rutines!
   company_create(createCompanyInput: CreateCompanyInput!): companies!
@@ -226,6 +236,32 @@ input CreateRutineInput {
   name: String!
   series: Float!
   userId: String!
+}
+
+input CreateRutineWithExercisesInput {
+  dateIni: DateTime!
+  dateEnd: DateTime!
+  days: Float!
+  obs: String!
+  roleId1: String!
+  roleId2: String
+  roleId3: String
+  name: String!
+  exercises: [ExerciseInput!]!
+  companyId: String
+  userId: String!
+}
+
+input ExerciseInput {
+  amountRepeat: [Int!]!
+  series: Float!
+  break: String!
+  weightByKilos: Float!
+  amountRepeatMax: [Int!]!
+  weightByKilosMax: Float!
+  exerciseId: String!
+  rutineTypeId: String!
+  days: Float!
 }
 
 input UpdateRutineInput {

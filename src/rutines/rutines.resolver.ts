@@ -8,6 +8,7 @@ import { RutineOrderRutineType } from './types/rutineOrderRutine.type';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RutineOrderDaysType } from './types/rutineOrderDays.type';
+import { CreateRutineWithExercisesInput } from './dto/create-rutine-exercises';
 
 @Resolver(of =>  RutineType)
 export class RutinesResolver {
@@ -18,6 +19,15 @@ export class RutinesResolver {
     console.log(createRutineInput);
     
     return this.RutineService.createRutine(createRutineInput);
+  }
+
+  @Mutation(returns => RutineType)
+  @UseGuards(JwtAuthGuard)
+  // @UseGuards(FirebaseAuthGuard)
+  async rutine_create_with_exercises(@Args('createRutineWithExercisesInput') createRutineWithExercisesInput: CreateRutineWithExercisesInput): Promise<Rutine> {
+    console.log(createRutineWithExercisesInput);
+    
+    return this.RutineService.createRutineWithExercises(createRutineWithExercisesInput);
   }
 
   @Query(returns => [RutineType])
