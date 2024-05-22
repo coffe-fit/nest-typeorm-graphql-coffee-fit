@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { TypeORMExceptionFilter } from './typeorm-exceptions.filter';
 var fs = require('fs');
 
 async function bootstrap() {
@@ -30,7 +31,7 @@ async function bootstrap() {
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
     credentials: true
   });
-  
+  app.useGlobalFilters(new TypeORMExceptionFilter());
   await app.listen(process.env.PORT);
 }
 bootstrap();

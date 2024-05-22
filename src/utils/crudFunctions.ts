@@ -1,5 +1,5 @@
 import { NotFoundException } from "@nestjs/common";
-
+import { User } from 'src/users/entities/user.entity';
 /**
  * Function to preccharge new data to update register
  * @param id unique identificator to look into data base
@@ -65,8 +65,23 @@ export const getDataByUserId = async (
   repository: any,
   relations?: string[]
 ) => {
+
   const register = await repository.findOne({
     where: {userId},
+    relations: relations
+  })
+  ownNotFoundException(userId, register);
+  return register;
+}
+
+export const getDataByUserId2 = async (
+  userId: string,
+  repository: any,
+  relations?: string[]
+) => {
+
+  const register = await repository.find({
+    where: {user: {id: userId} as User},
     relations: relations
   })
   ownNotFoundException(userId, register);

@@ -3,6 +3,7 @@ export {
   getDataById,
   ownNotFoundException,
   deleteCode,
-  getDataByUserId
+  getDataByUserId,
+  getDataByUserId2
 } from './crudFunctions';
 export { getTodayFormat } from './dateFunctions';

@@ -6,7 +6,7 @@ import { IsString, IsNumber, IsUUID, MinLength, MaxLength, Matches, IsIn, Valida
 
 
 @InputType()
-export class CreateUserInput {
+export class CreateUserInputPassLess {
   @Field({
     nullable: true,
     defaultValue: 0
@@ -34,10 +34,10 @@ export class CreateUserInput {
 
   @Field({
     nullable: true,
-    defaultValue: 'M'
+    defaultValue: 'MEN'
   })
   @IsString()
-  @IsIn(['M', 'F', 'KID', 'UNISEX'])
+  @IsIn(['M', 'F'])
   gender: string;
 
   @Field({
@@ -53,19 +53,7 @@ export class CreateUserInput {
   })
   @IsString()
   roleId?: string;
-  
-  @Field({
-    nullable: true,
-    defaultValue: ''
-  })
-  @IsString()
-  @MinLength(6)
-  @MaxLength(50)
-  @Matches(
-      /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-      message: 'The password must have a Uppercase, lowercase letter and a number'
-  })
-  password?: string;
+
 
   @Field({
     nullable: true,

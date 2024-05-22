@@ -7,8 +7,7 @@ import { UsersType } from "src/users/types/users.type";
 
 @ObjectType('exerciseByRutine')
 export class ExercisesByRutineType {
-  @Field({
-    nullable: true})
+  @Field({nullable: true})
   id?: String;
    
   @Field()

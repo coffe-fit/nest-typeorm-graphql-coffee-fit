@@ -5,7 +5,7 @@ import { Progress } from './entities/progress.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { getDataById, updateCode, getTodayFormat } from 'src/utils';
+import { getDataById, updateCode, getTodayFormat, getDataByUserId,getDataByUserId2 } from 'src/utils';
 // import { FirebaseAuthGuard } from '../auth/decorators/firebase.decorators';
 // import { JwtAuthGuard } from '../auth/decorators/jwt.decorator';
 
@@ -40,6 +40,16 @@ export class ProgressService {
   async findByIdProgress(processId: string): Promise<Progress> {
     const progress = await getDataById(
       processId,
+      this.progressRepository,
+      this.relations
+      );
+    return progress;
+  }
+
+
+  async findByUserIdProgress(userId: string): Promise<Progress> {
+    const progress = await getDataByUserId2(
+      userId,
       this.progressRepository,
       this.relations
       );

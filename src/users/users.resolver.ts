@@ -5,8 +5,9 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { UsersType } from './types/users.type';
 import { UsersRutinesType } from './types/usersRutines.type';
 import { User } from './entities/user.entity';
-import { UseGuards } from '@nestjs/common';
+import { BadRequestException, HttpCode, NotFoundException, Res, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CreateUserInputPassLess } from './dto/create-user-passless.input';
 
 @Resolver(of => UsersType)
 export class UsersResolver {
@@ -39,8 +40,10 @@ export class UsersResolver {
   // @Args('createRecordInput') createRecordInput:
   @Mutation(returns => UsersType)
   user_create(
-    @Args('createUserInput') createRecordInput: CreateUserInput) {
-    return this.usersService.createUser(createRecordInput);
+    @Args('createUserInputPassLess') createRecordInput: CreateUserInputPassLess) {
+      console.log(createRecordInput);
+      
+    return this.usersService.createUser2(createRecordInput);
   }
 
   @Query(returns => [UsersType])
@@ -56,10 +59,29 @@ export class UsersResolver {
   }
   
   @Mutation(returns => UsersType)
-  user_update(
+  async user_update(
     @Args('userId') id: string,
     @Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.updateUser(id, updateUserInput);
+      console.log(updateUserInput);
+      try {
+        const response = await this.usersService.updateUser(id, updateUserInput);
+        if (!response) {
+          throw new NotFoundException("User with ID ${id} not found");
+        }
+        return response;
+      } catch (error) {
+        console.error(error);
+        if (error instanceof NotFoundException) {
+          throw error; // Re-lanza la excepción para que NestJS la maneje y envíe el response adecuado
+        }
+        if (error instanceof BadRequestException) {
+          console.log('--------------------------------');
+          
+          throw error; // Re-lanza la excepción para que NestJS la maneje y envíe el response adecuado
+        }
+        // Lanza una excepción genérica para cualquier otro tipo de error
+        throw new Error('An unexpected error occurred');
+      }
   }
 
   @Mutation(returns => UsersType)

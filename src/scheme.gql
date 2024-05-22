@@ -127,10 +127,29 @@ type rutineOrderDaysType {
 
 type progress {
   id: String
-  measurement: String!
-  bodyIndex: String!
-  weightByKilos: Float!
-  dateCreated: DateTime!
+  weight: String
+  rightShoulder: String
+  leftShoulder: String
+  rightBicep: String
+  leftBicep: String!
+  rightLeg: String!
+  chest: String!
+  rightCalf: String!
+  leftCalf: String!
+  waist: String!
+  rightForearm: String!
+  leftForearm: String!
+  diet: String!
+  height: String!
+  age: String!
+  bodyFatPercentage: String!
+  muscleMass: String!
+  restingHeartRate: String!
+  bloodPressure: String!
+  flexibility: String!
+  strengthLevel: String!
+  injuryHistory: String!
+  fitnessGoals: String!
   obs: String!
   user: Users!
 }
@@ -159,12 +178,13 @@ type Query {
   exercise_findByRutineTypeId(rutineTypeId: String!): [exercises!]!
   progress_findAll: [progress!]!
   progress_findById(progressId: String!): progress!
+  progress_findByUserId(userId: String!): [progress!]!
   exercisesByRutineType_findAll: [exerciseByRutine!]!
   _runSeed: [Seed!]!
 }
 
 type Mutation {
-  user_create(createUserInput: CreateUserInput!): Users!
+  user_create(createUserInputPassLess: CreateUserInputPassLess!): Users!
   user_update(userId: String!, updateUserInput: UpdateUserInput!): Users!
   remove(userId: String!): Users!
   auth_signIn(signInAuthInput: CreateAuthInput!): auth!
@@ -185,10 +205,12 @@ type Mutation {
   exercise_delete(exerciseId: String!): exercises!
   exercise_create(createExerciseInput: CreateExerciseInput!): exercises!
   exercise_update(exerciseId: String!, updateExerciseInput: UpdateExerciseInput!): exercises!
+  progress_create(createProgressInput: CreateProgressInput!): progress!
+  progress_update(progressId: String!, updateProgressInput: UpdateProgressInput!): progress!
   exercisesByRutineType_create(createExercisesByRutineInput: CreateExercisesByRutineInput!): exerciseByRutine!
 }
 
-input CreateUserInput {
+input CreateUserInputPassLess {
   age: Float = 0
   companyId: String = "0001COF"
   document: String = ""
@@ -196,7 +218,6 @@ input CreateUserInput {
   gender: String = "MEN"
   phone: String = ""
   roleId: String = "CLIENT"
-  password: String = ""
   username: String = ""
 }
 
@@ -220,6 +241,18 @@ input CreateAuthInput {
 input AuthForanyToken {
   email: String!
   foranyToken: String!
+  username: String = ""
+}
+
+input CreateUserInput {
+  age: Float = 0
+  companyId: String = "0001COF"
+  document: String = ""
+  email: String!
+  gender: String = "M"
+  phone: String = ""
+  roleId: String = "CLIENT"
+  password: String = ""
   username: String = ""
 }
 
@@ -343,6 +376,65 @@ input UpdateExerciseInput {
   userCreatorId: String
   active: Boolean
   activeByCompany: Boolean
+}
+
+input CreateProgressInput {
+  weight: String
+  rightShoulder: String
+  leftShoulder: String
+  rightBicep: String
+  leftBicep: String
+  rightLeg: String
+  leftLeg: String
+  chest: String
+  rightCalf: String
+  leftCalf: String
+  waist: String
+  rightForearm: String
+  leftForearm: String
+  diet: String
+  height: String
+  age: String
+  bodyFatPercentage: String
+  muscleMass: String
+  restingHeartRate: String
+  bloodPressure: String
+  endurance: String
+  flexibility: String
+  strengthLevel: String
+  injuryHistory: String
+  fitnessGoals: String
+  obs: String
+  userId: String!
+}
+
+input UpdateProgressInput {
+  weight: String
+  rightShoulder: String
+  leftShoulder: String
+  rightBicep: String
+  leftBicep: String
+  rightLeg: String
+  leftLeg: String
+  chest: String
+  rightCalf: String
+  leftCalf: String
+  waist: String
+  rightForearm: String
+  leftForearm: String
+  diet: String
+  height: String
+  age: String
+  bodyFatPercentage: String
+  muscleMass: String
+  restingHeartRate: String
+  bloodPressure: String
+  endurance: String
+  flexibility: String
+  strengthLevel: String
+  injuryHistory: String
+  fitnessGoals: String
+  obs: String
 }
 
 input CreateExercisesByRutineInput {

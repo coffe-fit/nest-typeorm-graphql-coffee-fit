@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { getDataById, updateCode, getTodayFormat } from 'src/utils';
 import { Rutine } from 'src/rutines/entities/rutine.entity';
 import { RutineService } from 'src/rutines/rutines.service';
+import { CreateUserInputPassLess } from './dto/create-user-passless.input';
 
 @Injectable()
 export class UsersService {
@@ -24,18 +25,10 @@ export class UsersService {
 
   async createUser(createUserInput: CreateUserInput): Promise<User> {
     let {roleId, companyId, ...dataInput} = createUserInput;
-    // const role = { name: roleId } as unknown as Role || {}
-    const role = await this.RoleRepository.findOne({
-      where: {name: roleId || 'CLIENT'}
-    })
-    // const company = {nameId: companyId} as unknown as Company || {}
-    const company = await this.CompanyRepository.findOne({
-      where: {nameId: companyId}
-    }) 
     const user = this.userRepository.create(
       {
-        role,
-        company,
+        role: {id: roleId} as Role,
+        company: {id: companyId} as Company,
         active: true,
         date_register: getTodayFormat(),
         ...dataInput
@@ -47,6 +40,19 @@ export class UsersService {
     return await this.userRepository.find({
       relations: this.relations
     });
+  }
+
+  async createUser2(createUserInputPassLess: CreateUserInputPassLess): Promise<User> {
+    let {roleId, companyId, ...dataInput} = createUserInputPassLess;
+    const user = this.userRepository.create(
+      {
+        role: {id: roleId} as Role,
+        company: companyId && {id: companyId} as Company,
+        active: true,
+        date_register: getTodayFormat(),
+        ...dataInput
+      });
+    return await this.userRepository.save(user);
   }
 
   async getAllUsersByRoles(roles: string[]): Promise<any> {
@@ -81,13 +87,27 @@ export class UsersService {
   }
 
   async updateUser(userId: string, updateUserInput:UpdateUserInput): Promise<User> {
-    let { ...toUpdate } = updateUserInput;
-    const user = await updateCode(
-      userId,
-      toUpdate,
-      this.userRepository
-    );
-    return this.userRepository.save(user);
+    let { roleId, companyId, ...toUpdate } = updateUserInput;
+    console.log(companyId);
+      const user = await updateCode(
+        userId,
+        {
+          role: roleId && {id: roleId} as Role,
+          company: companyId && {id: companyId} as Company,
+          ...toUpdate
+        },
+        this.userRepository
+      );
+      try {
+        
+      const response = await this.userRepository.save(user);
+      console.log(response);
+      
+      return response;
+      } catch (error) {
+        throw new BadRequestException({error});
+      }
+    
   }
 
   async deleteUser(userId: string): Promise<void> {

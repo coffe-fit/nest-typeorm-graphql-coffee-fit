@@ -1,26 +1,161 @@
 import { Field, InputType } from "@nestjs/graphql";
-import { IsDate, IsNumber, IsString, IsUUID } from "class-validator";
+import { IsDate, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
 @InputType()
 export class CreateProgressInput {
    
-  @Field()
+  @Field({nullable: true})
+  @IsOptional()
   @IsString()
-  bodyIndex: string;
-   
-  @Field()
+  weight?: string;
+
+  @Field({nullable: true})
+  @IsOptional()
   @IsString()
-  measurement: string;
+  rightShoulder?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  leftShoulder?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  rightBicep?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  leftBicep?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  rightLeg?: string;
+
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  leftLeg?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  chest?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  rightCalf?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  leftCalf?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  waist?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  rightForearm?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  leftForearm?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  diet?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  height?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  age?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  bodyFatPercentage?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  muscleMass?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  restingHeartRate?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  bloodPressure?: string;
+
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  endurance?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  flexibility?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  strengthLevel?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  injuryHistory?: string;
+
+  
+  @Field({nullable: true})
+  @IsOptional()
+  @IsString()
+  fitnessGoals?: string;
    
-  @Field()
+  @Field({nullable: true})
+  @IsOptional()
   @IsString()
   obs: string;
 
   @Field()
   @IsUUID()
   userId: string;
-   
-  @Field()
-  @IsNumber()
-  weightByKilos: number;
 }
