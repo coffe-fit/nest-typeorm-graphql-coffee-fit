@@ -75,8 +75,6 @@ export class UsersResolver {
           throw error; // Re-lanza la excepción para que NestJS la maneje y envíe el response adecuado
         }
         if (error instanceof BadRequestException) {
-          console.log('--------------------------------');
-          
           throw error; // Re-lanza la excepción para que NestJS la maneje y envíe el response adecuado
         }
         // Lanza una excepción genérica para cualquier otro tipo de error

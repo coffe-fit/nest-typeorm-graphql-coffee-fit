@@ -146,11 +146,13 @@ type progress {
   muscleMass: String!
   restingHeartRate: String!
   bloodPressure: String!
+  endurance: String!
   flexibility: String!
   strengthLevel: String!
   injuryHistory: String!
   fitnessGoals: String!
   obs: String!
+  dateCreated: String!
   user: Users!
 }
 

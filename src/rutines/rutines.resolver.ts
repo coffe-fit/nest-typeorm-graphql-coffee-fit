@@ -9,6 +9,8 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RutineOrderDaysType } from './types/rutineOrderDays.type';
 import { CreateRutineWithExercisesInput } from './dto/create-rutine-exercises';
+import { NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common';
+
 
 @Resolver(of =>  RutineType)
 export class RutinesResolver {
@@ -54,6 +56,7 @@ export class RutinesResolver {
   @UseGuards(JwtAuthGuard)
   async rutine_getActualRutineOrderDays(@Context() context){
     const userId = context.user.id;
+    // const userId = "12ea4613-139f-46b2-8be1-4164f3a1634b";
     console.log(userId);
     
     return await this.RutineService.getActualRutineOrderDays(userId);

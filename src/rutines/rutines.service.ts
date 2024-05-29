@@ -9,7 +9,7 @@ import { Role } from 'src/roles/entities/role.entity';
 import { RutinesType } from 'src/rutines_type/entities/rutines_type.entity';
 import { Exercise } from 'src/exercises/entities/exercise.entity';
 import { UpdateRutineInput } from './dto/update-rutine.input';
-import { deleteCode, getDataById, updateCode, getDataByUserId } from 'src/utils';
+import { deleteCode, getDataById, updateCode, getDataByUserId, ownNotFoundException } from 'src/utils';
 import { RutineType } from './types/rutine.type';
 import { ExercisesByRutine } from 'src/exercises-by-rutine/entities/exercises-by-rutine.entity';
 import { ExercisesByDay } from 'src/exercises-by-rutine/types/exercises-by-day.type';
@@ -156,7 +156,6 @@ export class RutineService {
     const rutines = await this.getActualRutine(userId);
     const exercises = await this.getExercisesByRutine(rutines[0].id)
     
-    
     const result: { rutineTypeName: any, exercises: any, days:any }[] = [];
     const result2: any = [];
     // // Obtener Days únicos
@@ -220,7 +219,7 @@ export class RutineService {
   }
 
   private async getActualRutine(userId: string) {
-    return await this.RutineRepository.find({
+    const register = await this.RutineRepository.find({
       where: {
         user: {id: userId} as User,
         active: true
@@ -230,15 +229,22 @@ export class RutineService {
       },
       relations: this.relations
     })
+    ownNotFoundException(userId, register);
+    ownNotFoundException(userId, register.length===0 ? null:[]);
+    return register;
   }
 
   private async getExercisesByRutine(rutineId: string) {
-    return await this.ExercisesByRutineRepository.find({
+    const register = await this.ExercisesByRutineRepository.find({
       where: {
         rutine: {id: rutineId} as Rutine,
       },
       relations: ['rutineType', 'exercise', 'rutine']
     });
+    ownNotFoundException(rutineId, register);
+    ownNotFoundException(rutineId, register.length===0 ? null:[]);
+    return register
+    
   }
 
 

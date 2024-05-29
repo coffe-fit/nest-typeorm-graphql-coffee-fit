@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
@@ -21,6 +22,8 @@ import { AuthModule } from './auth/auth.module';
 import { ExercisesByRutineModule } from './exercises-by-rutine/exercises-by-rutine.module';
 
 import { SeedModule } from './seed/seed.module';
+import { GraphQLExceptionInterceptor } from './utils/exceptionError/not-found-exception.filter';
+import { GqlHttpExceptionFilter } from './utils/exceptionError/auth-exception';
 
 @Module({
   imports: [
@@ -28,22 +31,47 @@ import { SeedModule } from './seed/seed.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/scheme.gql'),
-      context: ({ req }) => {
-        // console.log('user', req.headers.authorization); // <-- this is always undefined
-        return ({ req });
-      },
+      // context: ({ req }) => {
+      //   // console.log('user', req.headers.authorization); // <-- this is always undefined
+      //   return ({ req });
+      // },
       // autoSchemaFile: true,
       playground: !(process.env.PLAY_GROUND ==='false'),
       plugins: [
         ApolloServerPluginLandingPageLocalDefault({
           footer: !(process.env.PLUGINS_FOOTER === 'false')
         }),
-      ]
+      ],
+      context: ({ req, res }) => ({ req, res }),
+      formatError: (error: any) => {
+        const graphQLFormattedError = {
+          message: error.message,
+          path: error.path,
+          extensions: {
+            code: error.extensions?.code || 'INTERNAL_SERVER_ERROR',
+            status: error.extensions?.originalError?.statusCode || 500,
+            error: error.extensions?.originalError?.error || error.name,
+          },
+        };
+        return graphQLFormattedError;
+      },
+      // formatError: (error) => {
+      //   const { extensions } = error;
+      //   const exception = extensions?.exception || {};
+
+      //   return {
+      //     message: error.message,
+      //     path: error.path,
+      //     extensions: {
+      //       statusCode: 500,
+      //       error: 'InternalServerError',
+      //     },
+      //   };
+      // },
     }),
     TypeOrmModule.forRoot({
       ...ormconfig
     }),
-    // AuthModule,
     UsersModule,
     CompaniesModule,
     RolesModule,
@@ -57,6 +85,16 @@ import { SeedModule } from './seed/seed.module';
     // SeedModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: GraphQLExceptionInterceptor,
+      
+    // },
+    {
+      provide: APP_FILTER,
+      useClass: GqlHttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

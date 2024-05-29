@@ -85,7 +85,7 @@ export class AuthService {
         companyId: user.company
       })};;
     } catch (error) {
-      console.log(error);
+      console.log('signUp', error);
       this.handleDBErrors(error);
     }
   }

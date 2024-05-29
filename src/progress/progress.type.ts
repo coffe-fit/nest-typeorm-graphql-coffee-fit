@@ -124,6 +124,7 @@ export class ProgressType {
   @IsString()
   bloodPressure?: string;
 
+  @Field()
   @IsOptional()
   @IsString()
   endurance?: string;
@@ -155,6 +156,10 @@ export class ProgressType {
   @Field()
   @IsString()
   obs: string;
+
+  @Field()
+  @IsString()
+  dateCreated: string;
 
   @Field(() => UsersType)
   user: UsersType;

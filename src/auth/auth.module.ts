@@ -28,7 +28,7 @@ import { UsersModule } from 'src/users/users.module';
         return {
           secret: configService.get('JWT_SECRET'),
           signOptions: {
-            expiresIn: '10h'
+            expiresIn: '1000000h'
           }
         }
       },
