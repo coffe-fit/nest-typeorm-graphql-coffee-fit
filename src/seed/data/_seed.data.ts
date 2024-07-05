@@ -5,6 +5,7 @@ import { UsersType } from 'src/users/types/users.type';
 import { v4 as uuid } from 'uuid';
 import { exercise1, exercise20, exercise52 } from './exercises.data';
 import { rolesData } from './roles.data';
+import { exercisesMetricsData } from './exercisesMetrics.data';
 import { usersData } from './users.data';
 import { rutineTypeData } from './rutineType.data';
 import { companiesData } from './companies.data';
@@ -16,6 +17,7 @@ interface SeedData {
   rutineType: RutinesTypeType[],
   exercises: any[];
   companies: any[];
+  exercisesMetrics: any[]
 }
 export const initialData: SeedData = {
   roles: rolesData,
@@ -23,5 +25,6 @@ export const initialData: SeedData = {
   rutineType: rutineTypeData,
   exercises: exercise20,
   companies: companiesData,
+  exercisesMetrics: exercisesMetricsData
   // companies: []
 }

@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { updateCode, getDataById, deleteCode, ownNotFoundException } from 'src/utils';
 import { User } from 'src/users/entities/user.entity';
 import { RutinesType } from 'src/rutines_type/entities/rutines_type.entity';
+import { RutinesTypeType } from 'src/rutines_type/rutines_type.type';
 
 
 @Injectable()
@@ -16,13 +17,15 @@ export class ExerciseService {
     private readonly exerciseRepository: Repository<Exercise>,
   ) {}
 
-  private relations = ['userCreator', 'userCreator.company', 'userCreator.role'];
+  private relations = ['userCreator', 'userCreator.company', 'userCreator.role', 'rutineType'];
   
-  async createExercise(createExerciseInput: CreateExerciseInput): Promise<Exercise> {
-    let {userCreatorId, ...dataInput} = createExerciseInput;
+  async createExercise(createExerciseInput: CreateExerciseInput, userId: string): Promise<Exercise> {
+    let { rutineTypeId, ...dataInput } = createExerciseInput;
+    console.log({rutineType: {id: rutineTypeId} as any});
     const exercise = this.exerciseRepository.create(
       {
-        userCreator: {id: userCreatorId} as User,
+        rutineType: {id: rutineTypeId} as any,
+        userCreator: {id: userId} as User,
         ...dataInput
       });
     return await this.exerciseRepository.save(exercise);

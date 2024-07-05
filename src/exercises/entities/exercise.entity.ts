@@ -1,12 +1,13 @@
 
 import { v4 as uuid } from 'uuid';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn, ManyToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
 import { Rutine } from 'src/rutines/entities/rutine.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import { ExercisesByRutine } from 'src/exercises-by-rutine/entities/exercises-by-rutine.entity';
 import { RutinesType } from 'src/rutines_type/entities/rutines_type.entity';
+import { ExercisesMetrics } from 'src/exercises-metrics/entities/exercises-metrics.entity';
 
 @Entity()
 export class Exercise {
@@ -53,6 +54,13 @@ export class Exercise {
     default: true
   })
   activeByCompany: boolean;
+
+  @Column("text", {
+    default: ['REPS'],
+    nullable: true,
+    array: true 
+  })
+  metrics: String[];
 
   @ManyToOne(() => User, (user) => user.exercise, {
     onDelete: 'CASCADE',

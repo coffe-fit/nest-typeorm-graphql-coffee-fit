@@ -2,7 +2,7 @@
 // exercise.graphql.dto.ts
 
 import { Field, InputType } from '@nestjs/graphql';
-import {  IsBoolean, IsString, IsUUID, IsUrl, ValidateIf } from 'class-validator';
+import {  IsArray, IsBoolean, IsOptional, IsString, IsUUID, IsUrl, ValidateIf } from 'class-validator';
 
 @InputType()
 export class CreateExerciseInput {
@@ -16,23 +16,35 @@ export class CreateExerciseInput {
 
   @Field()
   @IsUrl()
-  imgBad: string;
-
-  @Field()
-  @IsUrl()
   movie: string;
+
+  @Field(() => [String])
+  @IsArray()
+  metrics: string[];
 
   @Field()
   @IsUUID()
-  userCreatorId: string;
+  rutineTypeId: string;
 
+  @IsOptional()
+  @Field({ nullable: true })
+  @IsUrl()
+  imgBad?: string;
+
+  @IsOptional()
+  @Field({ nullable: true })
+  @IsUrl()
+  movie2?: string;
+
+  @IsOptional()
   @Field({ nullable: true })
   @IsBoolean()
-  @ValidateIf((object,value) => value !== null)
+  @ValidateIf((object, value) => value !== null)
   active?: boolean;
 
+  @IsOptional()
   @Field({ nullable: true })
   @IsBoolean()
-  @ValidateIf((object,value) => value !== null)
+  @ValidateIf((object, value) => value !== null)
   activeByCompany?: boolean;
 }

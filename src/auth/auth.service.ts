@@ -42,8 +42,6 @@ export class AuthService {
   }
 
   async signInFromFirebase(createAuthInput: AuthForanyToken) {
-    console.log(createAuthInput, "1----------------");
-    
     const {email, name, foranyToken}: any = createAuthInput;
 
     // para que me retorne solo la data que necesito
@@ -58,7 +56,6 @@ export class AuthService {
         username: name || '',
         document: '',
         gender: '',
-        roleId: '',
         phone: '',
         age: 0
       });

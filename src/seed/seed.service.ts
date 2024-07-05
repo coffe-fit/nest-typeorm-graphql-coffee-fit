@@ -11,12 +11,15 @@ import { Company } from 'src/companies/entities/company.entity';
 import { RutinesType } from 'src/rutines_type/entities/rutines_type.entity';
 import { Exercise } from 'src/exercises/entities/exercise.entity';
 import { v4 as uuid } from 'uuid';
+import { ExercisesMetrics } from 'src/exercises-metrics/entities/exercises-metrics.entity';
+import { exercisesMetricsType } from 'src/exercises-metrics/exercises-metrics.type';
 
 //recomendacion Eliminar los exercixex by rutine y rutine yusuarios de forma manual per ejecutar el seed
 @Injectable()
 export class SeedService {
   constructor(
     @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
+    @InjectRepository(Role) private readonly exercisesMetricsRepository: Repository<ExercisesMetrics>,
     @InjectRepository(RutinesType) private readonly rutinesTypeTypeRepository: Repository<RutinesType>,
     @InjectRepository(Exercise) private readonly exerciseRepository: Repository<Exercise>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
@@ -27,6 +30,7 @@ export class SeedService {
     try {
       await this.deleteTables();
       await this.insertRoles();
+      await this.insertExercisesMetrics();
       await this.insertRutineType();
       await this.insertExercise();
 
@@ -76,6 +80,12 @@ export class SeedService {
     .delete()
     .where({})
     .execute()
+
+    const queryBuilderExercisesMetrics = this.exercisesMetricsRepository.createQueryBuilder();
+    await queryBuilderExercisesMetrics
+    .delete()
+    .where({})
+    .execute()
   }
 
 
@@ -88,6 +98,14 @@ export class SeedService {
     await this.roleRepository.save(seedRoles);
   }
 
+  private async insertExercisesMetrics() {
+    const seedMetrics = initialData.exercisesMetrics;
+    const exercisesMetricsall: any[] = [];
+    seedMetrics.forEach(metrics=>{
+      exercisesMetricsall.push(this.exercisesMetricsRepository.create(metrics))
+    })
+    await this.exercisesMetricsRepository.save(seedMetrics);
+  }
   private async insertUsers() {
     const seedUser = initialData.users;
     const users: User[] = [];

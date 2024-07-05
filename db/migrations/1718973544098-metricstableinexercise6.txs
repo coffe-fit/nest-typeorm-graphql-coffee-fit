@@ -1,0 +1,16 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Metricstableinexercise61718973544098 implements MigrationInterface {
+    name = 'Metricstableinexercise61718973544098'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "exercise" ALTER COLUMN "metrics" SET NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "exercise" ALTER COLUMN "metrics" SET DEFAULT '{REPS}'`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "exercise" ALTER COLUMN "metrics" DROP DEFAULT`);
+        await queryRunner.query(`ALTER TABLE "exercise" ALTER COLUMN "metrics" DROP NOT NULL`);
+    }
+
+}

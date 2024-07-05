@@ -1,0 +1,24 @@
+type ExercisesMetric {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input CreateExercisesMetricInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateExercisesMetricInput {
+  id: Int!
+}
+
+type Query {
+  exercisesMetrics: [ExercisesMetric]!
+  exercisesMetric(id: Int!): ExercisesMetric
+}
+
+type Mutation {
+  createExercisesMetric(createExercisesMetricInput: CreateExercisesMetricInput!): ExercisesMetric!
+  updateExercisesMetric(updateExercisesMetricInput: UpdateExercisesMetricInput!): ExercisesMetric!
+  removeExercisesMetric(id: Int!): ExercisesMetric
+}

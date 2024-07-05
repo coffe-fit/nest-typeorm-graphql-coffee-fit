@@ -49,7 +49,7 @@ export class CreateUserInput {
 
   @Field({
     nullable: true,
-    defaultValue: 'CLIENT'
+    defaultValue: 'baecbd4e-0e2c-4596-b4ee-7e9f35623a7d'
   })
   @IsString()
   roleId?: string;

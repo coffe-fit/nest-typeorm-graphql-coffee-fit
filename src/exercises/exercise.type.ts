@@ -2,7 +2,9 @@
 // exercise.graphql.dto.ts
 
 import { Field, ID, InputType, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsNotEmpty, IsString, IsUrl, ValidateIf } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsString, IsUrl, ValidateIf } from 'class-validator';
+import { exercisesMetricsType } from 'src/exercises-metrics/exercises-metrics.type';
+import { RutinesTypeType } from 'src/rutines_type/rutines_type.type';
 import { UsersType } from 'src/users/types/users.type';
 
 @ObjectType('exercises')
@@ -40,6 +42,14 @@ export class ExerciseType {
 
   @Field(() => UsersType)
   userCreator?: UsersType;
+
+  @Field(() => RutinesTypeType)
+  rutineType?: RutinesTypeType;
+
+  @Field(() => [String])
+  @IsArray()
+  metrics: string[];
+  
 
   // Otros campos necesarios para un ejercicio
 }

@@ -1,4 +1,4 @@
-import { NotFoundException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { User } from 'src/users/entities/user.entity';
 /**
  * Function to preccharge new data to update register
@@ -65,7 +65,7 @@ export const getDataByUserId = async (
   repository: any,
   relations?: string[]
 ) => {
-
+  if (userId === '') throw new BadRequestException (`Item with uuid: ${userId} is empty. `)
   const register = await repository.findOne({
     where: {userId},
     relations: relations
@@ -79,7 +79,7 @@ export const getDataByUserId2 = async (
   repository: any,
   relations?: string[]
 ) => {
-
+  if (userId === '') throw new BadRequestException (`Item with uuid: ${userId} is empty. `)
   const register = await repository.find({
     where: {user: {id: userId} as User},
     relations: relations

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { ExerciseService } from './exercises.service';
 import { CreateExerciseInput } from './dto/create-exercise.input';
 import { UpdateExerciseInput } from './dto/update-exercise.input';
@@ -15,8 +15,15 @@ export class ExercisesResolver {
   constructor(private readonly exerciseService: ExerciseService) {}
 
   @Mutation(returns => ExerciseType)
-  async exercise_create(@Args('createExerciseInput') createExerciseInput: CreateExerciseInput): Promise<Exercise> {
-    return this.exerciseService.createExercise(createExerciseInput);
+  @UseGuards(JwtAuthGuard)
+  async exercise_create(@Args('createExerciseInput') createExerciseInput: CreateExerciseInput, @Context() context): Promise<Exercise> {
+    const userId = context.user.id;
+    if (!userId) {
+      console.log('the Id in rutine_getActualRutineOrderRutineType missin ');
+    }
+    console.log(userId);
+    
+    return this.exerciseService.createExercise(createExerciseInput, userId);
   }
 
   @Query(returns => [ExerciseType])
