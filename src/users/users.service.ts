@@ -24,15 +24,18 @@ export class UsersService {
   private relations = ['company', 'role'];
 
   async createUser(createUserInput: CreateUserInput): Promise<User> {
+
     let {roleId, companyId, ...dataInput} = createUserInput;
+
     const user = this.userRepository.create(
       {
-        role: {id: roleId} as Role,
-        company: {id: companyId} as Company,
+        role: {id: 'baecbd4e-0e2c-4596-b4ee-7e9f35623a7d'} as Role,
         active: true,
         date_register: getTodayFormat(),
         ...dataInput
       });
+      console.log('createUser:', user);
+
     return await this.userRepository.save(user);
   }
 

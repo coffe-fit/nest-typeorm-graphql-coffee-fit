@@ -32,6 +32,12 @@ type Users {
   company: companies!
 }
 
+type rutinesType {
+  id: String!
+  active: Boolean!
+  name: String!
+}
+
 type exercises {
   id: ID!
   name: String!
@@ -42,6 +48,8 @@ type exercises {
   movie2: String!
   activeByCompany: Boolean!
   userCreator: Users!
+  rutineType: rutinesType!
+  metrics: [String!]!
 }
 
 type rutines {
@@ -64,12 +72,6 @@ type rutines {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
-
-type rutinesType {
-  id: String!
-  active: Boolean!
-  name: String!
-}
 
 type exerciseByRutine {
   id: String
@@ -161,6 +163,13 @@ type Seed {
   seed: String!
 }
 
+type exercisesMetrics {
+  id: String
+  active: Boolean!
+  name: String!
+  measure: String!
+}
+
 type Query {
   user_findAll: [Users!]!
   user_findAllByRoleClient: [UsersRutines!]!
@@ -183,6 +192,7 @@ type Query {
   progress_findByUserId(userId: String!): [progress!]!
   exercisesByRutineType_findAll: [exerciseByRutine!]!
   _runSeed: [Seed!]!
+  exercisesMetrics_findAll: [exercisesMetrics!]!
 }
 
 type Mutation {
@@ -253,7 +263,7 @@ input CreateUserInput {
   email: String!
   gender: String = "M"
   phone: String = ""
-  roleId: String = "CLIENT"
+  roleId: String = "baecbd4e-0e2c-4596-b4ee-7e9f35623a7d"
   password: String = ""
   username: String = ""
 }
@@ -363,9 +373,11 @@ input UpdateRutinesTypeInput {
 input CreateExerciseInput {
   name: String!
   imgGood: String!
-  imgBad: String!
   movie: String!
-  userCreatorId: String!
+  metrics: [String!]!
+  rutineTypeId: String!
+  imgBad: String
+  movie2: String
   active: Boolean
   activeByCompany: Boolean
 }
@@ -373,9 +385,11 @@ input CreateExerciseInput {
 input UpdateExerciseInput {
   name: String
   imgGood: String
-  imgBad: String
   movie: String
-  userCreatorId: String
+  metrics: [String!]
+  rutineTypeId: String
+  imgBad: String
+  movie2: String
   active: Boolean
   activeByCompany: Boolean
 }

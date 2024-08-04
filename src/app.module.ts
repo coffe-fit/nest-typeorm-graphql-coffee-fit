@@ -23,7 +23,10 @@ import { ExercisesByRutineModule } from './exercises-by-rutine/exercises-by-ruti
 
 import { SeedModule } from './seed/seed.module';
 import { GraphQLExceptionInterceptor } from './utils/exceptionError/not-found-exception.filter';
-import { GqlHttpExceptionFilter } from './utils/exceptionError/auth-exception';
+import { GqlBadRequestExceptionFilter, GqlHttpExceptionFilter } from './utils/exceptionError/auth-exception';
+import { ExercisesMetricsModule } from './exercises-metrics/exercises-metrics.module';
+import { TypeORMExceptionFilter } from './typeorm-exceptions.filter';
+import { ApolloError } from 'apollo-server-express';
 
 @Module({
   imports: [
@@ -44,16 +47,14 @@ import { GqlHttpExceptionFilter } from './utils/exceptionError/auth-exception';
       ],
       context: ({ req, res }) => ({ req, res }),
       formatError: (error: any) => {
-        const graphQLFormattedError = {
-          message: error.message,
-          path: error.path,
-          extensions: {
-            code: error.extensions?.code || 'INTERNAL_SERVER_ERROR',
-            status: error.extensions?.originalError?.statusCode || 500,
-            error: error.extensions?.originalError?.error || error.name,
-          },
-        };
-        return graphQLFormattedError;
+        const originalError = error.originalError;
+        if (originalError instanceof ApolloError) {
+          return originalError;
+        }
+
+        return new ApolloError(error.message, 'BAD_USER_INPUT', {
+          exception: error.extensions.exception,
+        });
       },
       // formatError: (error) => {
       //   const { extensions } = error;
@@ -82,19 +83,23 @@ import { GqlHttpExceptionFilter } from './utils/exceptionError/auth-exception';
     AuthModule,
     ExercisesByRutineModule,
     SeedModule,
+    ExercisesMetricsModule,
     // SeedModule,
   ],
   controllers: [],
   providers: [
     // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: GraphQLExceptionInterceptor,
-      
+    //   provide: APP_FILTER,
+    //   useClass: GqlHttpExceptionFilter,
     // },
-    {
-      provide: APP_FILTER,
-      useClass: GqlHttpExceptionFilter,
-    },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: GqlBadRequestExceptionFilter,
+    // },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: TypeORMExceptionFilter,
+    // },
   ],
 })
 export class AppModule {}

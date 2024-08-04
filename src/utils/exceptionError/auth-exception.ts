@@ -1,4 +1,4 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException, BadRequestException } from '@nestjs/common';
 import { GqlArgumentsHost } from '@nestjs/graphql';
 import { Code } from 'typeorm';
 
@@ -8,20 +8,47 @@ export class GqlHttpExceptionFilter implements ExceptionFilter {
     const gqlHost = GqlArgumentsHost.create(host);
     const context = gqlHost.getContext();
     const response = context.res;
-    console.log(gqlHost.getInfo().fieldName, new Date().toISOString(),);
-    const exceptionResponse = exception.getResponse(); // Obtener la respuesta de la excepción
 
-    let errorCode = 'UNKNOWN_ERROR'; // Valor por defecto para el código de error
-    if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
-      // Desestructuramos para obtener el código de error y el mensaje
-      const { error, message } = exceptionResponse as any;
-      if (error) {
-        errorCode = error;
-      }
-    }
+    const statusCode = exception.getStatus();
+    const exceptionResponse = exception.getResponse() as
+      | string
+      | { error: string; message: string[]; statusCode: number };
+
     const errorResponse = {
-      error: { code: errorCode.replaceAll(' ','_').toUpperCase(), ...exception},
+      statusCode,
+      message: exception.message,
+      ...(typeof exceptionResponse === 'string' ? { error: exceptionResponse } : exceptionResponse),
     };
-    response.status(exception.getStatus()).json({...errorResponse});
+
+    console.error('GraphQL Error:', JSON.stringify(errorResponse));
+    response.status(statusCode).json(errorResponse);
+  }
+}
+
+@Catch(BadRequestException)
+export class GqlBadRequestExceptionFilter implements ExceptionFilter {
+  catch(exception: BadRequestException, host: ArgumentsHost) {
+    const gqlHost = GqlArgumentsHost.create(host);
+    const context = gqlHost.getContext();
+    const response = context.res;
+
+    const exceptionResponse = exception.getResponse();
+    let message = '';
+
+    if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
+      const { message: msg } = exceptionResponse as any;
+      message = msg;
+    }
+
+    const errorResponse = {
+      statusCode: 400,
+      error: { 
+        code: 'BAD_USER_INPUT', 
+        message,
+      },
+    };
+
+    console.warn('GqlBadRequestExceptionFilter:', JSON.stringify(errorResponse));
+    response.status(400).json(errorResponse);
   }
 }

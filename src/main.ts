@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { TypeORMExceptionFilter } from './typeorm-exceptions.filter';
-import {  GqlHttpExceptionFilter } from './utils/exceptionError/auth-exception';
+import {  GqlBadRequestExceptionFilter, GqlHttpExceptionFilter } from './utils/exceptionError/auth-exception';
 var fs = require('fs');
 import * as morgan from 'morgan';
 async function bootstrap() {
@@ -10,13 +10,10 @@ async function bootstrap() {
   // se copia para poder usar los decoradores en las dto -
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      //para que combierta en numero los queryParams
       transform: true,
-      transformOptions: {
-        enableImplicitConversion: true,
-      },
+      forbidNonWhitelisted: true,
+      whitelist: true,
+      exceptionFactory: (errors) => new BadRequestException(errors),
     }),
   );
   // app.setGlobalPrefix('api');
@@ -35,7 +32,7 @@ async function bootstrap() {
   app.use(morgan('dev')); // Middleware de logging
   // app.useGlobalFilters(new NotFoundExceptionFilter());
   // app.useGlobalInterceptors(new GqlHttpExceptionFilter());
-  app.useGlobalFilters(new TypeORMExceptionFilter());
+  // app.useGlobalFilters(new GqlHttpExceptionFilter(), new GqlBadRequestExceptionFilter(), new TypeORMExceptionFilter());
   await app.listen(process.env.PORT);
 }
 bootstrap();
